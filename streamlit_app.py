@@ -17,19 +17,16 @@ except Exception as e:
 
 st.header('Input your data here',divider="red")
 
-st.subheader("These subheaders have rotating dividers", divider="red")
+Accident_Date = st.date_input("Accident Date", datetime.date(2024, 12, 11))
+
 Age_at_njury = st.slider("Insert your value", 0, 117, 42)
 
-st.subheader("These subheaders have rotating dividers", divider="red")
-Accident_Date = st.date_input("Insert your value", datetime.date(2024, 12, 11))
+Alternative_Dispute_Resolution =st.selectbox("How would you like to be contacted?",("Y", "N ", "U"))
 
-st.subheader("These subheaders have rotating dividers", divider="red")
 Average_Weekly_Wage = st.slider("Insert your value", 0, 2828079, 491.0892)
 
-st.subheader("These subheaders have rotating dividers", divider="red")
 Birth_Year = st.slider("Insert your value", 0, 2018, 1977)
 
-st.subheader("IME-4 Count", divider="red")
 IME_4_Count = st.slider("Insert your value", 1, 73, 2)
 
 
@@ -37,8 +34,8 @@ IME_4_Count = st.slider("Insert your value", 1, 73, 2)
     
 
 # Make a prediction using the model
-if st.button('Predict'):
-    prediction = model.predict([[input_value]])
-    st.write(f'Prediction: {prediction[0]}')
+#if st.button('Predict'):
+ #   prediction = model.predict([[input_value]])
+  #  st.write(f'Prediction: {prediction[0]}')
     
-st.divider()
+#st.divider()
