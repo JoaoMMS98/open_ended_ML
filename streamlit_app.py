@@ -43,7 +43,7 @@ with st.expander('Prediction'):
 
     Assembly_Date = st.date_input("Assembly Date", datetime.date(2024, 12, 11))
 
-    Attorney/Representative = st.selectbox("Attorney/Representative",("Y", "N"))
+    Attorney_Representative = st.selectbox("Attorney/Representative",("Y", "N"))
 
     C2_Date = st.date_input("  C-2 Date", datetime.date(2024, 12, 11))
 
