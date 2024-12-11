@@ -21,7 +21,7 @@ with st.expander('Prediction'):
 
     Age_at_njury = st.number_input("Age at Injury")
 
-    Alternative_Dispute_Resolution =st.selectbox(" Alternative Dispute Resolution",("Y", "N ", "U"))
+    Alternative_Dispute_Resolution = st.selectbox(" Alternative Dispute Resolution",("Y", "N ", "U"))
 
     Average_Weekly_Wage = st.number_input("Average Weekly Wage")
 
@@ -40,6 +40,24 @@ with st.expander('Prediction'):
     Agreement_Reached = st.number_input("Agreement Reached")
 
     Number_of_Dependents = st.number_input("Number of Dependents")
+
+    Assembly_Date = st.date_input("Assembly Date", datetime.date(2024, 12, 11))
+
+    Attorney/Representative = st.selectbox("Attorney/Representative",("Y", "N"))
+
+    C2_Date = st.date_input("  C-2 Date", datetime.date(2024, 12, 11))
+
+    C3 Date = st.date_input("  C-3 Date", datetime.date(2024, 12, 11))
+
+    Carrier_Name = st.text_input("Carrier Name", "STATE INSURANCE FUND")
+
+    Carrier_Type = st.selectbox("Carrier Type",('1A. PRIVATE', '2A. SIF', '4A. SELF PRIVATE', '3A. SELF PUBLIC',
+       'UNKNOWN', '5D. SPECIAL FUND - UNKNOWN',
+       '5A. SPECIAL FUND - CONS. COMM. (SECT. 25-A)',
+       '5C. SPECIAL FUND - POI CARRIER WCB MENANDS'))
+    
+
+    
     
     
 
