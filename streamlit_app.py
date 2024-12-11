@@ -81,7 +81,7 @@ with st.expander('Prediction'):
        'AGRICULTURE, FORESTRY, FISHING AND HUNTING', 'MINING',
        'MANAGEMENT OF COMPANIES AND ENTERPRISES'))
 
-        OIICS_Nature_of_Injury_Description = st.text_input("OIICS Nature of Injury Description")
+    OIICS_Nature_of_Injury_Description = st.text_input("OIICS Nature of Injury Description")
 
         
     
