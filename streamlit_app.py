@@ -22,8 +22,8 @@ except Exception as e:
     
 
 # Make a prediction using the model
-if st.button('Predict'):
-    prediction = model.predict([[input_value]])
-    st.write(f'Prediction: {prediction[0]}')
+    if st.button('Predict'):
+        prediction = model.predict([[input_value]])
+        st.write(f'Prediction: {prediction[0]}')
     
 st.divider()
