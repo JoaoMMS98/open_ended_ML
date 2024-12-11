@@ -9,16 +9,19 @@ def load_pickle(file_path):
 
 st.title('To Grant or Not To Grant')
 
-# Example: Load a model
-try:
-    model = load_pickle('model.pkl')
-except Exception as e:
-    st.error(f"Error loading pickle file: {e}")
-
-
-input_value = st.number_input('Enter a value:')
+with st.expantion
+    try:
+        model = load_pickle('model.pkl')
+    except Exception as e:
+        st.error(f"Error loading pickle file: {e}")
+    
+    Accident Date =  st.date_input("Accident Date", datetime.date(2024, 12, 11))
+    
+    
 
 # Make a prediction using the model
-if st.button('Predict'):
-    prediction = model.predict([[input_value]])
-    st.write(f'Prediction: {prediction[0]}')
+    if st.button('Predict'):
+        prediction = model.predict([[input_value]])
+        st.write(f'Prediction: {prediction[0]}')
+    
+st.divider()
