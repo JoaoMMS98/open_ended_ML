@@ -16,7 +16,7 @@ except Exception as e:
     st.error(f"Error loading pickle file: {e}")
 
 st.header('Input your data here',divider="red")
-with st.expander:
+with st.expander('Prediction'):
     Accident_Date = st.date_input("Accident Date", datetime.date(2024, 12, 11))
 
     Age_at_njury = st.slider("Insert your value", 0, 117, 42)
