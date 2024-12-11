@@ -9,7 +9,7 @@ def load_pickle(file_path):
 
 st.title('To Grant or Not To Grant')
 
-with st.expantion
+with st.expander
     try:
         model = load_pickle('model.pkl')
     except Exception as e:
