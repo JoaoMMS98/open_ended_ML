@@ -19,23 +19,23 @@ st.header('Input your data here',divider="red")
 with st.expander('Prediction'):
     Accident_Date = st.date_input("Accident Date", datetime.date(2024, 12, 11))
 
-    Age_at_njury = st.slider("Insert your value", 0, 117, 42)
+    Age_at_njury = st.slider("Age at Injury", 0, 117, 42)
 
-    Alternative_Dispute_Resolution =st.selectbox("How would you like to be contacted?",("Y", "N ", "U"))
+    Alternative_Dispute_Resolution =st.selectbox(" Alternative Dispute Resolution",("Y", "N ", "U"))
 
-    Average_Weekly_Wage = st.slider("Insert your value", 0, 2828079, 492)
+    Average_Weekly_Wage = st.slider("Average Weekly Wage", 0, 2828079, 492)
 
-    Birth_Year = st.slider("Insert your value", 0, 2018, 1977)
+    Birth_Year = st.slider("Birth Year", 0, 2018, 1977)
 
-    IME_4_Count = st.slider("Insert your value", 1, 73, 2)
+    IME_4_Count = st.slider("IME-4 Count", 1, 73, 2)
 
 
     
     
 
 # Make a prediction using the model
-#if st.button('Predict'):
- #   prediction = model.predict([[input_value]])
-  #  st.write(f'Prediction: {prediction[0]}')
+    if st.button('Predict'):
+        prediction = model.predict([[input_value]])
+        st.write(f'Prediction: {prediction[0]}')
     
-#st.divider()
+st.divider()
