@@ -23,11 +23,11 @@ with st.expander('Prediction'):
 
     Alternative_Dispute_Resolution =st.selectbox(" Alternative Dispute Resolution",("Y", "N ", "U"))
 
-    Average_Weekly_Wage = st.st.number_input("Average Weekly Wage")
+    Average_Weekly_Wage = st.number_input("Average Weekly Wage")
 
-    Birth_Year = st.st.number_input("Birth Year")
+    Birth_Year = st.number_input("Birth Year")
 
-    IME_4_Count = st.st.number_input("IME-4 Count")
+    IME_4_Count = st.number_input("IME-4 Count")
 
 
     
