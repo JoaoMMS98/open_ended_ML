@@ -29,7 +29,17 @@ with st.expander('Prediction'):
 
     IME_4_Count = st.number_input("IME-4 Count")
 
+    Industry_Code = st.number_input("Industry Code")
 
+    WCIO_Cause_of_Injury_Code = st.number_input("WCIO Cause of Injury Code")
+
+    WCIO_Nature_of_Injury_Code = st.number_input(" WCIO Nature of Injury Code")
+
+    WCIO_Part_Of_Body_Code = st.number_input("WCIO Part Of Body Code")
+
+    Agreement_Reached = st.number_input("Agreement Reached")
+
+    Number_of_Dependents = st.number_input("Number of Dependents")
     
     
 
