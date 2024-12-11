@@ -9,12 +9,12 @@ def load_pickle(file_path):
 
 st.title('To Grant or Not To Grant')
 
-with st.expander:
-    try:
-        model = load_pickle('model.pkl')
-    except Exception as e:
-        st.error(f"Error loading pickle file: {e}")
-    
+try:
+    model = load_pickle('model.pkl')
+except Exception as e:
+    st.error(f"Error loading pickle file: {e}")
+
+with st.expander:    
     Accident_Date = st.date_input("Accident Date", datetime.date(2024, 12, 11))
     
     
