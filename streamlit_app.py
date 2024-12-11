@@ -23,7 +23,7 @@ with st.expander('Prediction'):
 
     Alternative_Dispute_Resolution =st.selectbox("How would you like to be contacted?",("Y", "N ", "U"))
 
-    Average_Weekly_Wage = st.slider("Insert your value", 0, 2828079, 491.0892)
+    Average_Weekly_Wage = st.slider("Insert your value", 0, 2828079, (491.0892))
 
     Birth_Year = st.slider("Insert your value", 0, 2018, 1977)
 
