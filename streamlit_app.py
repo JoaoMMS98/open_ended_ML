@@ -55,6 +55,21 @@ with st.expander('Prediction'):
        'UNKNOWN', '5D. SPECIAL FUND - UNKNOWN',
        '5A. SPECIAL FUND - CONS. COMM. (SECT. 25-A)',
        '5C. SPECIAL FUND - POI CARRIER WCB MENANDS'))
+
+    County_of_Injury = st.text_input("County of Injury", "SUFFOLK")
+
+    COVID_19_Indicator = st.selectbox("COVID_19_Indicator",("Y", "N"))
+
+    District_Name = st.selectbox("DistrictName",('SYRACUSE', 'ROCHESTER', 'ALBANY', 'HAUPPAUGE', 'NYC', 'BUFFALO',
+       'BINGHAMTON', 'STATEWIDE'))
+
+    First_Hearing_Date = st.date_input("First Hearing Date", datetime.date(2024, 12, 11))
+    
+
+    
+    
+    
+
     
 
     
