@@ -64,8 +64,30 @@ with st.expander('Prediction'):
        'BINGHAMTON', 'STATEWIDE'))
 
     First_Hearing_Date = st.date_input("First Hearing Date", datetime.date(2024, 12, 11))
+
+    Gender = st.selectbox("Gender",('M', 'F', 'U', 'X'))
+
+    Industry_Code_Description = st.selectbox("Industry Code Description",('RETAIL TRADE', 'CONSTRUCTION',
+       'ADMINISTRATIVE AND SUPPORT AND WASTE MANAGEMENT AND REMEDIAT',
+       'HEALTH CARE AND SOCIAL ASSISTANCE',
+       'ACCOMMODATION AND FOOD SERVICES', 'EDUCATIONAL SERVICES',
+       'INFORMATION', 'MANUFACTURING', 'TRANSPORTATION AND WAREHOUSING',
+       'WHOLESALE TRADE', 'REAL ESTATE AND RENTAL AND LEASING',
+       'FINANCE AND INSURANCE',
+       'OTHER SERVICES (EXCEPT PUBLIC ADMINISTRATION)',
+       'PUBLIC ADMINISTRATION',
+       'PROFESSIONAL, SCIENTIFIC, AND TECHNICAL SERVICES',
+       'ARTS, ENTERTAINMENT, AND RECREATION', nan, 'UTILITIES',
+       'AGRICULTURE, FORESTRY, FISHING AND HUNTING', 'MINING',
+       'MANAGEMENT OF COMPANIES AND ENTERPRISES'))
+
+        OIICS_Nature_of_Injury_Description = st.text_input("OIICS Nature of Injury Description")
+
+        
     
 
+    
+    
     
     
     
