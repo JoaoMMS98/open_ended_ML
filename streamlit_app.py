@@ -17,6 +17,11 @@ except Exception as e:
 
 st.header('Input your data here')
 Accident_Date = st.date_input("Accident Date", datetime.date(2024, 12, 11))
+Age_at_njury = st.slider("Age at Injury", 0, 117, 42)
+Average_Weekly_Wage = st.slider("Average Weekly Wage", 0, 2828079, 491.0892)
+Birth_Year = st.slider("Birth Year", 0, 2018, 1977)
+IME_4_Count = st.slider("IME-4 Count", 1, 73, 2)
+
 
     
     
