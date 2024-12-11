@@ -47,7 +47,7 @@ with st.expander('Prediction'):
 
     C2_Date = st.date_input("  C-2 Date", datetime.date(2024, 12, 11))
 
-    C3 Date = st.date_input("  C-3 Date", datetime.date(2024, 12, 11))
+    C3_Date = st.date_input("  C-3 Date", datetime.date(2024, 12, 11))
 
     Carrier_Name = st.text_input("Carrier Name", "STATE INSURANCE FUND")
 
