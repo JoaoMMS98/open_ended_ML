@@ -19,15 +19,15 @@ st.header('Input your data here',divider="red")
 with st.expander('Prediction'):
     Accident_Date = st.date_input("Accident Date", datetime.date(2024, 12, 11))
 
-    Age_at_njury = st.slider("Age at Injury", 0, 117, 42)
+    Age_at_njury = st.number_input("Age at Injury")
 
     Alternative_Dispute_Resolution =st.selectbox(" Alternative Dispute Resolution",("Y", "N ", "U"))
 
-    Average_Weekly_Wage = st.slider("Average Weekly Wage", 0, 2828079, 492)
+    Average_Weekly_Wage = st.st.number_input("Average Weekly Wage")
 
-    Birth_Year = st.slider("Birth Year", 0, 2018, 1977)
+    Birth_Year = st.st.number_input("Birth Year")
 
-    IME_4_Count = st.slider("IME-4 Count", 1, 73, 2)
+    IME_4_Count = st.st.number_input("IME-4 Count")
 
 
     
