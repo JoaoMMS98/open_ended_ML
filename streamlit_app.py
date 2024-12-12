@@ -5,7 +5,7 @@ import datetime
 
 def load_pickle(file_path):
     with open(file_path, 'rb') as f:
-        return pickle.load(f)
+        return pkl.load(f)
 
 
 st.title('To Grant or Not To Grant')
