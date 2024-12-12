@@ -13,10 +13,10 @@ st.write(preprocessed_data)
 
 st.title('To Grant or Not To Grant')
 
-try:
-    model = load_pickle('models/preprocessor_3.0_frangoInCantine.pkl')
-except Exception as e:
-    st.error(f"Error loading pickle file: {e}")
+#try:
+#    model = load_pickle('models/preprocessor_3.0_frangoInCantine.pkl')
+#except Exception as e:
+#    st.error(f"Error loading pickle file: {e}")
 
 st.header('Input your data here',divider="red")
 with st.expander('Prediction'):
