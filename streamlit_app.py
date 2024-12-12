@@ -16,7 +16,7 @@ def load_pickle(file_path):
 
 
 preprocessed_data = load_pickle('../models/preprocessor.pkl')
-st.write(preprocessed_data)
+#st.write(preprocessed_data)
 
 
 st.title('To Grant or Not To Grant')
