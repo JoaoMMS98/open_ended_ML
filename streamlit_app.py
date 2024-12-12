@@ -143,7 +143,7 @@ with st.expander('Prediction'):
      'INTERNAL ORGANS', 'HEART', 'VERTEBRAE','LUMBAR & OR SACRAL VERTEBRAE (VERTEBRA',
      'BRAIN', 'SACRUM AND COCCYX', 'ARTIFICIAL APPLIANCE', 'LARYNX', 'TRACHEA'))
 
-    ZipCode = st.text_input("Enter your zip code:")
+    ZipCode = st.text_input("Enter your zip code:", 00000)
     if ZipCode.isdigit() and len(ZipCode) in [5]:
         st.write(f"Valid zip code: {ZipCode}")
     else:
