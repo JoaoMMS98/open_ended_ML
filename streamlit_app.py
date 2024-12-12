@@ -162,7 +162,7 @@ data =[['Accident Date', 'Age at Injury', 'Alternative Dispute Resolution',
        'WCIO Nature of Injury Description', 'WCIO Part Of Body Code',
        'WCIO Part Of Body Description', 'Zip Code', 'Number of Dependents']]
 
-input_df = 
+#input_df = 
 
     
     
