@@ -151,7 +151,7 @@ with st.expander('Prediction'):
     
     WCB_Decision = st.selectbox("WCB Decision",('Not Work Related'))
 
-data =[['Accident Date', 'Age at Injury', 'Alternative Dispute Resolution',
+    data =[['Accident Date', 'Age at Injury', 'Alternative Dispute Resolution',
        'Assembly Date', 'Attorney/Representative', 'Average Weekly Wage',
        'Birth Year', 'C-2 Date', 'C-3 Date', 'Carrier Name', 'Carrier Type',
        'Claim Identifier', 'County of Injury', 'COVID-19 Indicator',
@@ -164,11 +164,6 @@ data =[['Accident Date', 'Age at Injury', 'Alternative Dispute Resolution',
 
 #input_df = 
 
-    
-    
-    
-
-# Make a prediction using the model
     if st.button('Predict'):
         prediction = model.predict([[input_df]])
         st.write(f'Prediction: {prediction[0]}')
