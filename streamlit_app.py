@@ -167,9 +167,9 @@ with st.expander('Prediction'):
             
    
     if st.button('Predict'):
-         preprocessor.fit(input_data)
-         transformed_data = preprocessor.transform(input_data)
-         prediction = model.predict([[transformed_data]])
+         #preprocessor.fit(input_data)
+        # transformed_data = preprocessor.transform(input_data)
+         prediction = model.predict([[input_data]])
          st.write(f'Prediction: {prediction[0]}')
     
 st.divider()
