@@ -27,19 +27,19 @@ with st.expander('Prediction'):
 
     Birth_Year = st.number_input("Birth Year")
 
-    IME_4_Count = st.number_input("IME-4 Count")
+    IME_4_Count = st.slider("IME-4 Count", 1, 73, 4)
 
-    Industry_Code = st.number_input("Industry Code")
+    Industry_Code = st.slider("Industry Code",11, 92, 61)
 
-    WCIO_Cause_of_Injury_Code = st.number_input("WCIO Cause of Injury Code")
+    WCIO_Cause_of_Injury_Code = st.slider("WCIO Cause of Injury Code", 1, 99, 56)
 
-    WCIO_Nature_of_Injury_Code = st.number_input(" WCIO Nature of Injury Code")
+    WCIO_Nature_of_Injury_Code = st.slider(" WCIO Nature of Injury Code",1, 91, 49)
 
     WCIO_Part_Of_Body_Code = st.number_input("WCIO Part Of Body Code")
 
     Agreement_Reached = st.number_input("Agreement Reached")
 
-    Number_of_Dependents = st.number_input("Number of Dependents")
+    Number_of_Dependents = st.slider("Number of Dependents", 0, 6, 3)
 
     Assembly_Date = st.date_input("Assembly Date", datetime.date(2024, 12, 11))
 
