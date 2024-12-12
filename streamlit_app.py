@@ -11,7 +11,7 @@ def load_pickle(file_path):
 st.title('To Grant or Not To Grant')
 
 try:
-    model = load_pickle('../models/preprocessor_3.0_frangoInCantine.pkl')
+    model = load_pickle('models/preprocessor_3.0_frangoInCantine.pkl')
 except Exception as e:
     st.error(f"Error loading pickle file: {e}")
 
