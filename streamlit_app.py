@@ -81,6 +81,7 @@ with st.expander('Prediction'):
        'ARTS, ENTERTAINMENT, AND RECREATION', 'UTILITIES',
        'AGRICULTURE, FORESTRY, FISHING AND HUNTING', 'MINING',
        'MANAGEMENT OF COMPANIES AND ENTERPRISES'))
+    
     Medical_Fee_Region = st.selectbox("Medical Fee Region ",('I', 'II','IV', 'UK', 'III'))
 
     WCIO_Cause_of_Injury_Description = st.selectbox("WCIO Cause of Injury Description ",(
@@ -102,8 +103,6 @@ with st.expander('Prediction'):
      'TEMPERATURE EXTREMES', 'HAND TOOL OR MACHINE IN USE', 'VEHICLE UPSET', 'COLLAPSING MATERIALS (SLIDES OF EARTH)',
      'TERRORISM', 'PANDEMIC', 'WELDING OPERATION', 'NATURAL DISASTERS', 'EXPLOSION OR FLARE BACK',
      'RADIATION', 'CRASH OF RAIL VEHICLE','MOLD', 'ABNORMAL AIR PRESSURE', 'CRASH OF WATER VEHICLE', 'CRASH OF AIRPLANE'))
-
-    Medical_Fee_Region = st.selectbox("Medical Fee Region ",('I', 'II','IV', 'UK', 'III'))
     
     WCIO_Nature_of_Injury_Description = st.selectbox("WCIO Nature of Injury Description"
     , ('CONTUSION', 'SPRAIN OR TEAR','CONCUSSION',
