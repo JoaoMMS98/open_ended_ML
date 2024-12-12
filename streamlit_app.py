@@ -17,17 +17,18 @@ except Exception as e:
 
 st.header('Input your data here',divider="red")
 with st.expander('Prediction'):
+    
     Accident_Date = st.date_input("Accident Date", datetime.date(2024, 12, 11))
 
-    Age_at_njury = st.number_input("Age at Injury")
+    Age_at_Injury = st.slider("Age at Injury", 0,117, 42)
 
     Alternative_Dispute_Resolution = st.selectbox(" Alternative Dispute Resolution",("Y", "N ", "U"))
 
     Average_Weekly_Wage = st.number_input("Average Weekly Wage")
 
-    Birth_Year = st.number_input("Birth Year")
+    Birth_Year = st.slider("Birth Year", 1886, 2018, 1977)
 
-    IME_4_Count = st.slider("IME-4 Count", 1, 73, 4)
+    IME_4_Count = st.slider("IME-4 Count", 1, 73, 2)
 
     Industry_Code = st.slider("Industry Code",11, 92, 61)
 
@@ -35,9 +36,9 @@ with st.expander('Prediction'):
 
     WCIO_Nature_of_Injury_Code = st.slider(" WCIO Nature of Injury Code",1, 91, 49)
 
-    WCIO_Part_Of_Body_Code = st.number_input("WCIO Part Of Body Code")
+    WCIO_Part_Of_Body_Code = st.slider("WCIO Part Of Body Code",1, 99, 38)
 
-    Agreement_Reached = st.number_input("Agreement Reached")
+    Agreement_Reached = st.slider("Agreement Reached",0,1)
 
     Number_of_Dependents = st.slider("Number of Dependents", 0, 6, 3)
 
@@ -80,10 +81,37 @@ with st.expander('Prediction'):
        'ARTS, ENTERTAINMENT, AND RECREATION', 'UTILITIES',
        'AGRICULTURE, FORESTRY, FISHING AND HUNTING', 'MINING',
        'MANAGEMENT OF COMPANIES AND ENTERPRISES'))
+    Medical_Fee_Region = st.selectbox("Medical Fee Region ",('I', 'II','IV', 'UK', 'III'))
+
+    WCIO_Cause_of_Injury_Description = st.selectbox("WCIO Cause of Injury Description ",(
+'FROM LIQUID OR GREASE SPILLS', 'REPETITIVE MOTION', 'OBJECT BEING LIFTED OR HANDLED',
+ 'HAND TOOL, UTENSIL; NOT POWERED', 'FALL, SLIP OR TRIP, NOC', 'CUT, PUNCTURE, SCRAPE, NOC',
+ 'OTHER - MISCELLANEOUS, NOC', 'STRUCK OR INJURED, NOC', 'FALLING OR FLYING OBJECT', 'CHEMICALS',
+ 'COLLISION OR SIDESWIPE WITH ANOTHER VEHICLE','LIFTING', 'TWISTING', 'ON SAME LEVEL', 'STRAIN OR INJURY BY, NOC',
+ 'MOTOR VEHICLE, NOC', 'FROM DIFFERENT LEVEL (ELEVATION)','PUSHING OR PULLING', 'FOREIGN MATTER (BODY) IN EYE(S)',
+ 'FELLOW WORKER, PATIENT OR OTHER PERSON', 'STEAM OR HOT FLUIDS', 'STATIONARY OBJECT',
+ 'ON ICE OR SNOW', 'ABSORPTION, INGESTION OR INHALATION, NOC','PERSON IN ACT OF A CRIME', 'INTO OPENINGS', 'ON STAIRS',
+ 'FROM LADDER OR SCAFFOLDING', 'SLIP, OR TRIP, DID NOT FALL', 'JUMPING OR LEAPING', 'MOTOR VEHICLE',
+ 'RUBBED OR ABRADED, NOC','REACHING', 'OBJECT HANDLED', 'HOT OBJECTS OR SUBSTANCES',
+ 'ELECTRICAL CURRENT', 'HOLDING OR CARRYING', 'CAUGHT IN, UNDER OR BETWEEN, NOC', 'FIRE OR FLAME',
+ 'CUMULATIVE, NOC', 'POWERED HAND TOOL, APPLIANCE', 'STRIKING AGAINST OR STEPPING ON, NOC', 'MACHINE OR MACHINERY',
+ 'COLD OBJECTS OR SUBSTANCES', 'BROKEN GLASS', 'COLLISION WITH A FIXED OBJECT', 'STEPPING ON SHARP OBJECT',
+ 'OBJECT HANDLED BY OTHERS', 'DUST, GASES, FUMES OR VAPORS', 'OTHER THAN PHYSICAL CAUSE OF INJURY',
+ 'CONTACT WITH, NOC', 'USING TOOL OR MACHINERY', 'SANDING, SCRAPING, CLEANING OPERATION', 'CONTINUAL NOISE',
+ 'ANIMAL OR INSECT', 'MOVING PARTS OF MACHINE', 'GUNSHOT', 'WIELDING OR THROWING', 'MOVING PART OF MACHINE',
+ 'TEMPERATURE EXTREMES', 'HAND TOOL OR MACHINE IN USE', 'VEHICLE UPSET', 'COLLAPSING MATERIALS (SLIDES OF EARTH)',
+ 'TERRORISM', 'PANDEMIC', 'WELDING OPERATION', 'NATURAL DISASTERS', 'EXPLOSION OR FLARE BACK',
+ 'RADIATION', 'CRASH OF RAIL VEHICLE','MOLD', 'ABNORMAL AIR PRESSURE', 'CRASH OF WATER VEHICLE', 'CRASH OF AIRPLANE'))
 
     OIICS_Nature_of_Injury_Description = st.text_input("OIICS Nature of Injury Description")
+
+    WCB_Decision = st.selectbox("WCB Decision",('Not Work Related'))
+
     
 
+    
+    
+    
         
     
 
