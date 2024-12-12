@@ -15,21 +15,22 @@ def load_pickle(file_path):
                    print(f"An unexpected error occurred: {e}")
 
 
-preprocessed_data = load_pickle('../models/preprocessor.pkl')
-#st.write(preprocessed_data)
+preprocesser = load_pickle('../models/preprocessor.pkl')
 
 
 st.title('To Grant or Not To Grant')
 
-#try:
-#    model = load_pickle('models/preprocessor_3.0_frangoInCantine.pkl')
-#except Exception as e:
-#    st.error(f"Error loading pickle file: {e}")
+try:
+    model = load_pickle('XGBClassifier_maj.pkl')
+except Exception as e:
+    st.error(f"Error loading pickle file: {e}")
 
 st.header('Input your data here',divider="red")
 with st.expander('Prediction'):
-    
+
     Accident_Date = st.date_input("Accident Date", datetime.date(2024, 12, 11))
+
+    Claim_Identifier = st.number_input('Claim Identifier')
 
     Age_at_Injury = st.slider("Age at Injury", 0,117, 42)
 
@@ -48,7 +49,7 @@ with st.expander('Prediction'):
     WCIO_Nature_of_Injury_Code = st.slider(" WCIO Nature of Injury Code",1, 91, 49)
 
     WCIO_Part_Of_Body_Code = st.slider("WCIO Part Of Body Code",1, 99, 38)
-
+#10
     Agreement_Reached = st.slider("Agreement Reached",0,1)
 
     Number_of_Dependents = st.slider("Number of Dependents", 0, 6, 3)
@@ -71,7 +72,7 @@ with st.expander('Prediction'):
     County_of_Injury = st.text_input("County of Injury", "SUFFOLK")
 
     COVID_19_Indicator = st.selectbox("COVID_19_Indicator",("Y", "N"))
-
+#20
     District_Name = st.selectbox("DistrictName",('SYRACUSE', 'ROCHESTER', 'ALBANY', 'HAUPPAUGE', 'NYC', 'BUFFALO',
        'BINGHAMTON', 'STATEWIDE'))
 
@@ -150,21 +151,18 @@ with st.expander('Prediction'):
     
     WCB_Decision = st.selectbox("WCB Decision",('Not Work Related'))
 
-    input
+data =[['Accident Date', 'Age at Injury', 'Alternative Dispute Resolution',
+       'Assembly Date', 'Attorney/Representative', 'Average Weekly Wage',
+       'Birth Year', 'C-2 Date', 'C-3 Date', 'Carrier Name', 'Carrier Type',
+       'Claim Identifier', 'County of Injury', 'COVID-19 Indicator',
+       'District Name', 'First Hearing Date', 'Gender', 'IME-4 Count',
+       'Industry Code', 'Industry Code Description', 'Medical Fee Region',
+       'OIICS Nature of Injury Description', 'WCIO Cause of Injury Code',
+       'WCIO Cause of Injury Description', 'WCIO Nature of Injury Code',
+       'WCIO Nature of Injury Description', 'WCIO Part Of Body Code',
+       'WCIO Part Of Body Description', 'Zip Code', 'Number of Dependents']]
 
-    
-    
-    
-        
-    
-
-    
-    
-    
-    
-    
-
-    
+input_df = 
 
     
     
@@ -172,7 +170,7 @@ with st.expander('Prediction'):
 
 # Make a prediction using the model
     if st.button('Predict'):
-        prediction = model.predict([[input_value]])
+        prediction = model.predict([[input_df]])
         st.write(f'Prediction: {prediction[0]}')
     
 st.divider()
