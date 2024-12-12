@@ -161,12 +161,12 @@ with st.expander('Prediction'):
        'WCIO Part Of Body Description', WCIO_Part_Of_Body_Description,'Zip Code', ZipCode, 'Number of Dependents', Number_of_Dependents)
    
    
-   input_data = pd.dataframe[data] 
+    input_data = pd.dataframe[data] 
 
-   transformed_data = preprocessor.transform(input_data)
+    transformed_data = preprocessor.transform(input_data)
    
-   if st.button('Predict'):
-        prediction = model.predict([[transformed_data]])
-        st.write(f'Prediction: {prediction[0]}')
+    if st.button('Predict'):
+         prediction = model.predict([[transformed_data]])
+         st.write(f'Prediction: {prediction[0]}')
     
 st.divider()
