@@ -5,14 +5,14 @@ import datetime
 
 def load_pickle(file_path):
             try:
-                    with open(file_path, 'rb') as f:
-                        return pkl.load(f)
-                except FileNotFoundError:
-                    print(f"Error: The file {file_path} was not found.")
-                except pkl.UnpicklingError:
-                    print(f"Error: Could not load the pickle file {file_path}. The file might be corrupted or incompatible.")
-                except Exception as e:
-                    print(f"An unexpected error occurred: {e}")
+                 with open(file_path, 'rb') as f:
+                      return pkl.load(f)
+            except FileNotFoundError:
+                   print(f"Error: The file {file_path} was not found.")
+            except pkl.UnpicklingError:
+                   print(f"Error: Could not load the pickle file {file_path}. The file might be corrupted or incompatible.")
+            except Exception as e:
+                   print(f"An unexpected error occurred: {e}")
 
 
 preprocessed_data = load_pickle('../models/preprocessor.pkl')
