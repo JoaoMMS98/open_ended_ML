@@ -7,7 +7,7 @@ def load_pickle(file_path):
     with open(file_path, 'rb') as f:
         return pkl.load(f)
 
-preprocessed_data = load_pickle('models/preprocessor.pkl')
+preprocessed_data = load_pickle('../models/preprocessor.pkl')
 st.write(preprocessed_data)
 
 
