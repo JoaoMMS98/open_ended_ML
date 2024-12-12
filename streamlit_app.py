@@ -7,6 +7,9 @@ def load_pickle(file_path):
     with open(file_path, 'rb') as f:
         return pkl.load(f)
 
+preprocessed_data = load_pickle('models/preprocessor.pkl')
+st.write(preprocessed_data)
+
 
 st.title('To Grant or Not To Grant')
 
@@ -137,11 +140,9 @@ with st.expander('Prediction'):
     else:
         st.error("Invalid zip code. Please enter a 5 digit zip code.")
     
-
-    
     WCB_Decision = st.selectbox("WCB Decision",('Not Work Related'))
 
-    
+    input
 
     
     
