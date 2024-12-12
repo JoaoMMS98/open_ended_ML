@@ -82,6 +82,7 @@ with st.expander('Prediction'):
        'MANAGEMENT OF COMPANIES AND ENTERPRISES'))
 
     OIICS_Nature_of_Injury_Description = st.text_input("OIICS Nature of Injury Description")
+    
 
         
     
