@@ -72,7 +72,7 @@ with st.expander('Prediction'):
     County_of_Injury = st.text_input("County of Injury", "SUFFOLK")
 
     COVID_19_Indicator = st.selectbox("COVID_19_Indicator",("Y", "N"))
-#20
+
     District_Name = st.selectbox("DistrictName",('SYRACUSE', 'ROCHESTER', 'ALBANY', 'HAUPPAUGE', 'NYC', 'BUFFALO',
        'BINGHAMTON', 'STATEWIDE'))
 
@@ -147,21 +147,26 @@ with st.expander('Prediction'):
 
     WCB_Decision = st.selectbox("WCB Decision",('Not Work Related'))
 
-    data =[['Accident Date', 'Age at Injury', 'Alternative Dispute Resolution',
-       'Assembly Date', 'Attorney/Representative', 'Average Weekly Wage',
-       'Birth Year', 'C-2 Date', 'C-3 Date', 'Carrier Name', 'Carrier Type',
-       'Claim Identifier', 'County of Injury', 'COVID-19 Indicator',
-       'District Name', 'First Hearing Date', 'Gender', 'IME-4 Count',
-       'Industry Code', 'Industry Code Description', 'Medical Fee Region',
-       'OIICS Nature of Injury Description', 'WCIO Cause of Injury Code',
-       'WCIO Cause of Injury Description', 'WCIO Nature of Injury Code',
-       'WCIO Nature of Injury Description', 'WCIO Part Of Body Code',
-       'WCIO Part Of Body Description', 'Zip Code', 'Number of Dependents']]
+    OIICS_Nature_of_Injury_Description = st.text_input('OIICS Nature of Injury Description')
 
-#input_df = 
+    data =('Accident Date', Accident_Date, 'Age at Injury', Age_at_Injury, 'Alternative Dispute Resolution', Alternative_Dispute_Resolution,
+       'Assembly Date', Assembly_Date,'Attorney/Representative', Attorney_Representative, 'Average Weekly Wage', Average_Weekly_Wage,
+       'Birth Year', Birth_Year, 'C-2 Date', C2_Date, 'C-3 Date', C3_Date, 'Carrier Name', Carrier_Name, 'Carrier Type', Carrier_Type,
+       'Claim Identifier', Claim_Identifier, 'County of Injury', County_of_Injury, 'COVID-19 Indicator', COVID_19_Indicator,
+       'District Name', District_Name, 'First Hearing Date', First_Hearing_Date, 'Gender', Gender, 'IME-4 Count', IME_4_Count,
+       'Industry Code', Industry_Code, 'Industry Code Description', Industry_Code_Description, 'Medical Fee Region', Medical_Fee_Region,
+       'OIICS Nature of Injury Description', OIICS_Nature_of_Injury_Description, 'WCIO Cause of Injury Code', WCIO_Cause_of_Injury_Code,
+       'WCIO Cause of Injury Description', WCIO_Cause_of_Injury_Description, 'WCIO Nature of Injury Code', WCIO_Nature_of_Injury_Code,
+       'WCIO Nature of Injury Description', WCIO_Nature_of_Injury_Description ,'WCIO Part Of Body Code', WCIO_Part_Of_Body_Code,
+       'WCIO Part Of Body Description', WCIO_Part_Of_Body_Description,'Zip Code', ZipCode, 'Number of Dependents', Number_of_Dependents)
+   
+   
+   input_data = pd.dataframe[data] 
 
-    if st.button('Predict'):
-        prediction = model.predict([[input_df]])
+   transformed_data = preprocessor.transform(input_data)
+   
+   if st.button('Predict'):
+        prediction = model.predict([[transformed_data]])
         st.write(f'Prediction: {prediction[0]}')
     
 st.divider()
