@@ -163,10 +163,11 @@ with st.expander('Prediction'):
    
     input_data = pd.DataFrame(data) 
 
-    transformed_data = preprocessor.fit.transform(input_data)
+    #transformed_data = preprocessor.fit.transform(input_data)
             
    
     if st.button('Predict'):
+         transformed_data = preprocessor.fit.transform(input_data)
          prediction = model.predict([[transformed_data]])
          st.write(f'Prediction: {prediction[0]}')
     
