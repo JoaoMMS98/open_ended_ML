@@ -15,7 +15,7 @@ def load_pickle(file_path):
                    print(f"An unexpected error occurred: {e}")
 
 
-preprocesser = load_pickle('../models/preprocessor.pkl')
+preprocessor = load_pickle('../models/preprocessor.pkl')
 
 
 st.title('To Grant or Not To Grant')
