@@ -144,7 +144,7 @@ with st.expander('Prediction'):
      'BRAIN', 'SACRUM AND COCCYX', 'ARTIFICIAL APPLIANCE', 'LARYNX', 'TRACHEA'))
 
     ZipCode = st.number_input("Enter your zip code:", placeholder="Type a number...")
-    if ZipCode.isdigit() and len(ZipCode) in [5]:
+    if len(ZipCode) in [5]:
         st.write(f"Valid zip code: {ZipCode}")
     else:
         st.error("Invalid zip code. Please enter a 5 digit zip code.")
