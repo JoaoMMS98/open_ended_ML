@@ -161,7 +161,7 @@ with st.expander('Prediction'):
        'WCIO Part Of Body Description', WCIO_Part_Of_Body_Description,'Zip Code', ZipCode, 'Number of Dependents', Number_of_Dependents)
    
    
-    input_data = pd.DataFrame[data] 
+    input_data = pd.DataFrame(data) 
 
     transformed_data = preprocessor.transform(input_data)
    
