@@ -1,4 +1,4 @@
- index adimport streamlit as st
+import streamlit as st
 import pickle as pkl
 import pandas as pd
 import datetime
@@ -161,7 +161,7 @@ with st.expander('Prediction'):
        'WCIO Part Of Body Description': WCIO_Part_Of_Body_Description,'Zip Code': ZipCode, 'Number of Dependents': Number_of_Dependents}
    
    
-    input_data = pd.DataFrame(data) 
+    input_data = pd.DataFrame(data, index =[12]) 
     input_data
 
     #transformed_data = preprocessor.fit.transform(input_data)
