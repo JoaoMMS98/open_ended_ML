@@ -1,4 +1,4 @@
-import streamlit as st
+ index adimport streamlit as st
 import pickle as pkl
 import pandas as pd
 import datetime
