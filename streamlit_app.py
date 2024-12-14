@@ -16,7 +16,7 @@ def load_pickle(file_path):
 
 
 with open('preprocessor_3.0_frangoInCantine.pkl', 'rb') as file:
-    obj = pickle.load(file)
+    obj = pkl.load(file)
     print(type(obj))
 
 
