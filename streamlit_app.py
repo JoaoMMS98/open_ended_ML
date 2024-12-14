@@ -15,7 +15,7 @@ def load_pickle(file_path):
                    print(f"An unexpected error occurred: {e}")
 
 
-preprocessor = load_pickle('../models/preprocessor.pkl')
+preprocessor = load_pickle('preprocessor.pkl')
 
 
 st.title('To Grant or Not To Grant')
@@ -167,8 +167,8 @@ with st.expander('Prediction'):
 
             
   if st.button('Predict'):
-    preprocessor.fit(input_data)
-    transformed_data = preprocessor.transform(input_data)
-    prediction = model.predict([[input_data]])
-    st.write(f'Prediction: {prediction[0]}')
+      preprocessor.fit(input_data)
+      transformed_data = preprocessor.transform(input_data)
+      prediction = model.predict([[input_data]])
+      st.write(f'Prediction: {prediction[0]}')
     
