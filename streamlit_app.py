@@ -29,7 +29,7 @@ except Exception as e:
     st.error(f"Error loading pickle file: {e}")
 
 if preprocessor is None:
-    raise ValueError("Preprocessor could not be loaded. Ensure the file is correct.")
+    st.error("Preprocessor could not be loaded. Ensure the file is correct.")
             
 
 st.header('Input your data here',divider="red")
