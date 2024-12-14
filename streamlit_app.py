@@ -13,8 +13,6 @@ def load_pickle(file_path):
                    print(f"Error: Could not load the pickle file {file_path}. The file might be corrupted or incompatible.")
             except Exception as e:
                    print(f"An unexpected error occurred: {e}")
-            if preprocessor is None:
-                        raise ValueError("The preprocessor could not be loaded. Please check the file.")
 
 
 
@@ -29,6 +27,8 @@ try:
     preprocessor = load_pickle('preprocessor_3.0_frangoInCantine.pkl')
 except Exception as e:
     st.error(f"Error loading pickle file: {e}")
+if preprocessor is None:
+            raise ValueError("The preprocessor could not be loaded. Please check the file.")
             
 
 st.header('Input your data here',divider="red")
