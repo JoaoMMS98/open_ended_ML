@@ -22,6 +22,10 @@ try:
     model = load_pickle('XGBClassifier_maj.pkl')
 except Exception as e:
     st.error(f"Error loading pickle file: {e}")
+            
+if model is None:
+    st.error("Model could not be loaded. Ensure the file is correct.")
+
 
 try:
     preprocessor = load_pickle('preprocessor_3.0_frangoInCantine.pkl')
