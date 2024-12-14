@@ -168,6 +168,6 @@ with st.expander('Prediction'):
             
     if st.button('Predict'):
                 transformed_data = preprocessor.transform(input_data)
-                prediction = model.predict([[input_data]])
+                prediction = model.predict([[transformed_data]])
                 st.write(f'Prediction: {prediction[0]}')
     
