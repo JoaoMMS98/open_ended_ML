@@ -149,7 +149,7 @@ with st.expander('Prediction'):
 
     OIICS_Nature_of_Injury_Description = st.text_input('OIICS Nature of Injury Description')
 
-    data =('Accident Date': Accident_Date, 'Age at Injury': Age_at_Injury, 'Alternative Dispute Resolution': Alternative_Dispute_Resolution,
+    data ={'Accident Date': Accident_Date, 'Age at Injury': Age_at_Injury, 'Alternative Dispute Resolution': Alternative_Dispute_Resolution,
        'Assembly Date': Assembly_Date,'Attorney/Representative': Attorney_Representative, 'Average Weekly Wage': Average_Weekly_Wage,
        'Birth Year': Birth_Year, 'C-2 Date': C2_Date, 'C-3 Date': C3_Date, 'Carrier Name': Carrier_Name, 'Carrier Type': Carrier_Type,
        'Claim Identifier': Claim_Identifier, 'County of Injury': County_of_Injury, 'COVID-19 Indicator': COVID_19_Indicator,
@@ -158,10 +158,11 @@ with st.expander('Prediction'):
        'OIICS Nature of Injury Description': OIICS_Nature_of_Injury_Description, 'WCIO Cause of Injury Code': WCIO_Cause_of_Injury_Code,
        'WCIO Cause of Injury Description': WCIO_Cause_of_Injury_Description, 'WCIO Nature of Injury Code': WCIO_Nature_of_Injury_Code,
        'WCIO Nature of Injury Description': WCIO_Nature_of_Injury_Description ,'WCIO Part Of Body Code': WCIO_Part_Of_Body_Code,
-       'WCIO Part Of Body Description': WCIO_Part_Of_Body_Description,'Zip Code': ZipCode, 'Number of Dependents': Number_of_Dependents)
+       'WCIO Part Of Body Description': WCIO_Part_Of_Body_Description,'Zip Code': ZipCode, 'Number of Dependents': Number_of_Dependents}
    
    
     input_data = pd.DataFrame(data) 
+    input_data
 
     #transformed_data = preprocessor.fit.transform(input_data)
             
