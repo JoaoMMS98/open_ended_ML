@@ -15,7 +15,7 @@ def load_pickle(file_path):
                    print(f"An unexpected error occurred: {e}")
 
 
-with open('preprocessor_3.0_frangoInCantine.pkl', 'rb') as file:
+with load_pickle('preprocessor_3.0_frangoInCantine.pkl', 'rb') as file:
     obj = pkl.load(file)
     print(type(obj))
 
