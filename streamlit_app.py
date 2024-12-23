@@ -16,10 +16,6 @@ from typing import Tuple, Dict, Union
 st.title('To Grant or Not To Grant')
 
 
-
-st.header('Input your data here',divider="red")
-with st.expander('Prediction'):
-
     def missing_value_summary(dataframe):
         nan_columns = dataframe.columns[dataframe.isna().any()].tolist()
     
@@ -255,6 +251,9 @@ def apply_scaling(df_input: Union[pd.DataFrame, Tuple], scalers: Dict) -> pd.Dat
             print(f"TypeError occurred: {e}")
         except ValueError as e:
             print(f"ValueError occurred: {e}")
+
+st.header('Input your data here',divider="red")
+with st.expander('Prediction'):
 
     Accident_Date = st.date_input("Accident Date", datetime.date(2024, 12, 11))
 
