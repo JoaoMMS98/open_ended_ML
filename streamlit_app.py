@@ -128,23 +128,23 @@ def handle_outliers(df):
     })
 
         # Average Weekly Wage
-        wage_lower = df_clean['Average Weekly Wage'].quantile(0.0025)
-        wage_upper = df_clean['Average Weekly Wage'].quantile(0.9975)
-        wage_lower_mask = df_clean['Average Weekly Wage'] < wage_lower
-        wage_upper_mask = df_clean['Average Weekly Wage'] > wage_upper
+    wage_lower = df_clean['Average Weekly Wage'].quantile(0.0025)
+    wage_upper = df_clean['Average Weekly Wage'].quantile(0.9975)
+    wage_lower_mask = df_clean['Average Weekly Wage'] < wage_lower
+    wage_upper_mask = df_clean['Average Weekly Wage'] > wage_upper
 
-        df_clean.loc[wage_lower_mask, 'Average Weekly Wage'] = wage_lower
-        df_clean.loc[wage_upper_mask, 'Average Weekly Wage'] = wage_upper
+    df_clean.loc[wage_lower_mask, 'Average Weekly Wage'] = wage_lower
+    df_clean.loc[wage_upper_mask, 'Average Weekly Wage'] = wage_upper
 
-        modifications['Average Weekly Wage'].update({
-            'modified_count': (wage_lower_mask | wage_upper_mask).sum(),
-            'lower_bound': wage_lower,
-            'upper_bound': wage_upper
-        })
+    modifications['Average Weekly Wage'].update({
+        'modified_count': (wage_lower_mask | wage_upper_mask).sum(),
+        'lower_bound': wage_lower,
+        'upper_bound': wage_upper
+    })
 
-        return df_clean, modifications
+    return df_clean, modifications
 
-    def validate_input_dataframe(df: Union[pd.DataFrame, Tuple]) -> pd.DataFrame:
+def validate_input_dataframe(df: Union[pd.DataFrame, Tuple]) -> pd.DataFrame:
         """
         Validate and extract DataFrame from input.
 
@@ -154,16 +154,16 @@ def handle_outliers(df):
         Returns:
         pd.DataFrame: Validated DataFrame
         """
-        if isinstance(df, pd.DataFrame):
-            return df
-        elif isinstance(df, tuple) and len(df) == 2:
-            if isinstance(df[0], pd.DataFrame):
-                print("Input is a tuple. Extracting DataFrame.")
-                return df[0]
-            else:
-                raise TypeError("Tuple does not contain a DataFrame.")
+    if isinstance(df, pd.DataFrame):
+        return df
+    elif isinstance(df, tuple) and len(df) == 2:
+        if isinstance(df[0], pd.DataFrame):
+            print("Input is a tuple. Extracting DataFrame.")
+            return df[0]
         else:
-            raise TypeError("Input must be a pandas DataFrame or a tuple containing a DataFrame.")
+            raise TypeError("Tuple does not contain a DataFrame.")
+    else:
+        raise TypeError("Input must be a pandas DataFrame or a tuple containing a DataFrame.")
 
 def identify_binary_columns(df: pd.DataFrame) -> list:
     """
