@@ -775,23 +775,26 @@ with st.expander('Prediction'):
     train_full = pd.merge(y, train_scaled, on='Claim Identifier', how='right')
 
     train_scaled.drop(columns=['Alternative Dispute Resolution_U'], errors='ignore')
-    
-    
-    if st.button('Predict'):
-                model = XGBClassifier(
-                        objective='multi:softprob',
-                        random_state=42,
-                        learning_rate=0.05046195857265063,
-                        max_depth=14,
-                        min_child_weight=4.295663382738008,
-                        subsample=0.5794673021390964,
-                        colsample_bytree=0.6752893520492427,
-                        n_estimators=716,
-                        reg_alpha=0.2207882375290882,
-                        reg_lambda=0.28791727579162424,
-                        gamma=1.5556906330098323,
+
+model = XGBClassifier(
+   objective='multi:softprob',
+   random_state=42,
+   learning_rate=0.05046195857265063,
+   max_depth=14,
+   min_child_weight=4.295663382738008,
+   subsample=0.5794673021390964,
+   colsample_bytree=0.6752893520492427,
+   n_estimators=716,
+   reg_alpha=0.2207882375290882,
+   reg_lambda=0.28791727579162424,
+   gamma=1.5556906330098323,
                     
                 )
+
+
+    
+    if st.button('Predict'):
+
                 model.fit(train_scaled, y)
                 prediction = model.predict([[test]])
                 st.write(f'Prediction: {prediction[0]}')
