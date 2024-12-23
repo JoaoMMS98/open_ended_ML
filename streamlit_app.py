@@ -471,11 +471,11 @@ with st.expander('Prediction'):
     col_fill_median = ['Average Weekly Wage', 'Birth Year', 'Accident Year']
 
     for col in col_fill_median:
-    median_value = train_set[col].median()
+        median_value = train_set[col].median()
 
-    train_set[col].fillna(median_value, inplace=True)
-    val_set[col].fillna(median_value, inplace=True)
-    test[col].fillna(median_value, inplace=True)
+        train_set[col].fillna(median_value, inplace=True)
+        val_set[col].fillna(median_value, inplace=True)
+        test[col].fillna(median_value, inplace=True)
 
     col_fill_mode = ['C-2 Date', 'C-3 Date', 'First Hearing Date', 'Zip Code']
 
