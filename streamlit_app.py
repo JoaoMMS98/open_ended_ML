@@ -793,9 +793,8 @@ model = XGBClassifier(
 
 
     
-    if st.button('Predict'):
-
-                model.fit(train_scaled, y)
-                prediction = model.predict([[test]])
-                st.write(f'Prediction: {prediction[0]}')
+if st.button('Predict'):
+            model.fit(train_scaled, y)
+            prediction = model.predict([[test]])
+            st.success(f'Prediction: {prediction[0]}')
     
