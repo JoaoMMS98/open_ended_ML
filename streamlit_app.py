@@ -316,14 +316,14 @@ with st.expander('Prediction'):
     val_set['Age at Injury'] = val_set['Accident Year'] - val_set['Birth Year']
 
     def fix_zip_code(x):
-    if isinstance(x, float) and x.is_integer():
-        return str(int(x))[:5]
-    if isinstance(x, str) and x.isnumeric():
-        return str(int(x))[:5]
-    try:
-        return(str(int(x))[:5])
-    except:
-        warnings.warn("x cannot be turned into a string of 5 characters", UserWarning)
+        if isinstance(x, float) and x.is_integer():
+            return str(int(x))[:5]
+        if isinstance(x, str) and x.isnumeric():
+            return str(int(x))[:5]
+        try:
+            return(str(int(x))[:5])
+        except:
+            warnings.warn("x cannot be turned into a string of 5 characters", UserWarning)
 
 
     train_set['Zip Code'] = train_set['Zip Code'].apply(fix_zip_code)
