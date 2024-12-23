@@ -768,16 +768,15 @@ with st.expander('Input Data'):
     scaler = StandardScaler()
 
     columns_to_scale = ['Carrier Name', 'Carrier Type', 'District Name', 'Industry Code', 'region_cluster']
+   
     train_scaled[columns_to_scale] = scaler.fit_transform(train_scaled[columns_to_scale])
     val_scaled[columns_to_scale] = scaler.transform(val_scaled[columns_to_scale])  # Use the same scaler fitted on train_set
     test_scaled[columns_to_scale] = scaler.transform(test_scaled[columns_to_scale])  # Use the same scaler fitted on train_set
 
-    val_full = pd.merge(y, val_scaled, on='Claim Identifier', how='right')
-
-    train_full = pd.merge(y, train_scaled, on='Claim Identifier', how='right')
 
     train_scaled.drop(columns=['Alternative Dispute Resolution_U'], errors='ignore')
-test_scaled
+
+
 model = XGBClassifier(
    objective='multi:softprob',
    random_state=42,
