@@ -16,18 +16,16 @@ jobs:
 
       # Step 2: Unzip the file
       - name: Unzip the file
-        run: |
-          # Create a directory to store the unzipped files
+        run: 
           mkdir unzipped_files
-          # Unzip the file into the newly created directory
           unzip path/to/yourfile.zip -d unzipped_files/
 
       # Step 3: Commit the unzipped files back to the repository
       - name: Commit unzipped files
         run: |
           # Set Git configuration
-          git config --global user.email "youremail@example.com"
-          git config --global user.name "Your Name"
+          git config --global user.email "20240748@novaims.unl."
+          git config --global user.name "João Sampaio"
           
           # Add the unzipped files to the staging area
           git add unzipped_files/
