@@ -702,7 +702,7 @@ with st.expander('Input Data'):
     test_clean = test_clean[0] if isinstance(test_clean, tuple) else test_clean
     val_clean = val_clean[0] if isinstance(val_clean, tuple) else val_clean
 
-   def engineer_features(df):
+    def engineer_features(df):
    # WCIO PCA
       wcio_features = ['WCIO Nature of Injury Code', 'WCIO Part Of Body Code', 'WCIO Cause of Injury Code']
       pca = PCA(n_components=2)
@@ -726,7 +726,7 @@ with st.expander('Input Data'):
       df['market_indicator'] = ((df['high_risk_nature']) |
                              (df['high_risk_body']) |
                              (df['high_risk_cause'])).astype(int)
-   
+     
       # Drop redundant columns
       cols_to_drop = [] #'Birth Year', 'COVID-19 Indicator_Y' + wcio_features
 
