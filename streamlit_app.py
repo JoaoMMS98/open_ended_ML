@@ -256,9 +256,6 @@ def scale_features(df_input: Union[pd.DataFrame, Tuple]) -> Tuple[pd.DataFrame, 
     except ValueError as e:
         print(f"ValueError occurred: {e}")
 
-
-    
-
     Accident_Date = st.date_input("Accident Date", datetime.date(2024, 12, 11))
 
     Claim_Identifier = st.number_input('Claim Identifier')
