@@ -265,13 +265,13 @@ with st.expander('Prediction'):
 
            # Execution pipeline with error handling
            try:
-           # Initial scaling on training data
+               # Initial scaling on training data
                train_scaled, scalers = scale_features(train_clean)
-
-           # Apply scaling to validation and test sets
+        
+               # Apply scaling to validation and test sets
                val_scaled = apply_scaling(val_clean, scalers)
                test_scaled = apply_scaling(test_clean, scalers)
-
+        
            except TypeError as e:
                print(f"TypeError occurred: {e}")
            except ValueError as e:
