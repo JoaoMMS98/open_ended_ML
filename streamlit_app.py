@@ -245,11 +245,11 @@ def apply_scaling(df_input: Union[pd.DataFrame, Tuple], scalers: Dict) -> pd.Dat
         # Execution pipeline with error handling
         try:
         # Initial scaling on training data
-        train_scaled, scalers = scale_features(train_clean)
+            train_scaled, scalers = scale_features(train_clean)
 
         # Apply scaling to validation and test sets
-        val_scaled = apply_scaling(val_clean, scalers)
-        test_scaled = apply_scaling(test_clean, scalers)
+            val_scaled = apply_scaling(val_clean, scalers)
+            test_scaled = apply_scaling(test_clean, scalers)
 
     except TypeError as e:
         print(f"TypeError occurred: {e}")
