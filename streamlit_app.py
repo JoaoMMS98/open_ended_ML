@@ -657,12 +657,28 @@ with st.expander('Input Data'):
 
     def engineer_features(df):
    # WCIO PCA
-      wcio_features = ['WCIO Nature of Injury Code', 'WCIO Part Of Body Code', 'WCIO Cause of Injury Code']
+    """
+    Engineer features for the dataset.
+    
+    """
+    # Define WCIO features
+      wcio_features = ['WCIO_Cause_of_Injury_Code', 'WCIO_Nature_of_Injury_Code', 'WCIO_Part_Of_Body_Code']
+    
+      # Check for missing values in WCIO features
+      if df[wcio_features].isnull().any().any():
+          raise ValueError("Missing values found in WCIO features.")
+    
+    # Standardize WCIO features
+      wcio_scaled = StandardScaler().fit_transform(df[wcio_features])
+    
+    # Apply PCA
       pca = PCA(n_components=2)
-      wcio_pca = pca.fit_transform(StandardScaler().fit_transform(df[wcio_features]))
-      df['wcio_pca1'] = wcio_pca[:, 0]
-      df['wcio_pca2'] = wcio_pca[:, 1]
-
+      wcio_pca = pca.fit_transform(wcio_scaled)
+    
+    # Add PCA components to the DataFrame
+      df['wcio_pca_1'] = wcio_pca[:, 0]
+      df['wcio_pca_2'] = wcio_pca[:, 1]
+    
       # Region clustering
       df['region_cluster'] = df['Medical Fee Region'].astype(str) + '_' + df['Zip Code'].astype(str) + df['County of Injury'].astype(str)
 
