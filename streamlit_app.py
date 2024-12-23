@@ -480,11 +480,11 @@ with st.expander('Prediction'):
     col_fill_mode = ['C-2 Date', 'C-3 Date', 'First Hearing Date', 'Zip Code']
 
     for col in col_fill_mode:
-    mode_value = train_set[col].mode()[0]
+        mode_value = train_set[col].mode()[0]
 
-    train_set[col].fillna(mode_value, inplace=True)
-    val_set[col].fillna(mode_value, inplace=True)
-    test[col].fillna(mode_value, inplace=True)
+        train_set[col].fillna(mode_value, inplace=True)
+        val_set[col].fillna(mode_value, inplace=True)
+        test[col].fillna(mode_value, inplace=True)
 
     
     def calculate_days_until_reference(df, reference_date='2023-12-25'):
