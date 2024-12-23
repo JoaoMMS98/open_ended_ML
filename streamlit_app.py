@@ -461,9 +461,6 @@ with st.expander('Prediction'):
     train = train.drop(columns=['WCIO Part Of Body Description'])
     test = test.drop(columns=['WCIO Part Of Body Description'])
 
-    train = train.drop(columns=['Industry Code Description'])
-    test = test.drop(columns=['Industry Code Description'])
-
     x = train.drop(columns= 'Claim Injury Type')
     y = train['Claim Injury Type']
 
