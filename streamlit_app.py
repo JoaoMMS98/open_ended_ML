@@ -16,116 +16,116 @@ from typing import Tuple, Dict, Union
 st.title('To Grant or Not To Grant')
 
 
-    def missing_value_summary(dataframe):
-        nan_columns = dataframe.columns[dataframe.isna().any()].tolist()
+def missing_value_summary(dataframe):
+    nan_columns = dataframe.columns[dataframe.isna().any()].tolist()
     
-        summary_data = []
+    summary_data = []
     
-        for column in nan_columns:
+    for column in nan_columns:
 
-            nan_number = dataframe[column].isna().sum()
+        nan_number = dataframe[column].isna().sum()
 
-            nan_percentage = (nan_number / len(dataframe)) * 100
+        nan_percentage = (nan_number / len(dataframe)) * 100
 
-            unique_values = dataframe[column].nunique()
+        unique_values = dataframe[column].nunique()
         
-            summary_data.append({
-                'Unique Values': unique_values,
-                'NaN Values': nan_number,
-                'Percentage NaN': nan_percentage
-            })
+        summary_data.append({
+            'Unique Values': unique_values,
+            'NaN Values': nan_number,
+            'Percentage NaN': nan_percentage
+        })
     
-        summary = pd.DataFrame(summary_data, index=nan_columns)
+    summary = pd.DataFrame(summary_data, index=nan_columns)
     
-        return summary
+    return summary
 
-    def create_lookup(dataframe, code_column, description_column):
-        lookup = dataframe[[code_column, description_column]].drop_duplicates()
-        lookup = lookup.reset_index(drop=True)
-        lookup[code_column] = lookup[code_column].astype('Int64')
-        lookup = lookup.sort_values(by=code_column).reset_index(drop=True)
+def create_lookup(dataframe, code_column, description_column):
+    lookup = dataframe[[code_column, description_column]].drop_duplicates()
+    lookup = lookup.reset_index(drop=True)
+    lookup[code_column] = lookup[code_column].astype('Int64')
+    lookup = lookup.sort_values(by=code_column).reset_index(drop=True)
     
-        return lookup
+    return lookup
 
-    def fix_zip_code(x):
-        if isinstance(x, float) and x.is_integer():
-            return str(int(x))[:5]
-        if isinstance(x, str) and x.isnumeric():
-            return str(int(x))[:5]
-        try:
-            return(str(int(x))[:5])
-        except:
-            warnings.warn("x cannot be turned into a string of 5 characters", UserWarning)
+def fix_zip_code(x):
+    if isinstance(x, float) and x.is_integer():
+        return str(int(x))[:5]
+    if isinstance(x, str) and x.isnumeric():
+        return str(int(x))[:5]
+    try:
+        return(str(int(x))[:5])
+    except:
+        warnings.warn("x cannot be turned into a string of 5 characters", UserWarning)
 
-    def calculate_days_until_reference(df, reference_date='2023-12-25'):
-        reference_date = pd.to_datetime(reference_date)
-        date_columns = ['Assembly Date', 'C-2 Date', 'C-3 Date', 'First Hearing Date']
+def calculate_days_until_reference(df, reference_date='2023-12-25'):
+    reference_date = pd.to_datetime(reference_date)
+    date_columns = ['Assembly Date', 'C-2 Date', 'C-3 Date', 'First Hearing Date']
 
-        for col in date_columns:
-            df[col] = pd.to_datetime(df[col])
-            df[col] = (reference_date - df[col]).dt.days
+    for col in date_columns:
+        df[col] = pd.to_datetime(df[col])
+        df[col] = (reference_date - df[col]).dt.days
 
-        return df
+    return df
 
-        def handle_outliers(df):
-            df_clean = df.copy()
-            modifications = {}
+def handle_outliers(df):
+    df_clean = df.copy()
+    modifications = {}
 
     # Track modifications for each column
-        for col in df_clean.columns:
-            modifications[col] = {
-                'original_count': len(df_clean),
-                'modified_count': 0,
-                'lower_bound': None,
-                'upper_bound': None
-            }
+    for col in df_clean.columns:
+        modifications[col] = {
+            'original_count': len(df_clean),
+            'modified_count': 0,
+            'lower_bound': None,
+            'upper_bound': None
+        }
 
-        # Date fields
-        date_cols = ['C-2 Date', 'C-3 Date', 'First Hearing Date']
-        for col in date_cols:
-            lower_bound = df_clean[col].quantile(0.001)
-            upper_bound = df_clean[col].quantile(0.999)
-            lower_mask = df_clean[col] < lower_bound
-            upper_mask = df_clean[col] > upper_bound
+    # Date fields
+    date_cols = ['C-2 Date', 'C-3 Date', 'First Hearing Date']
+    for col in date_cols:
+        lower_bound = df_clean[col].quantile(0.001)
+        upper_bound = df_clean[col].quantile(0.999)
+        lower_mask = df_clean[col] < lower_bound
+        upper_mask = df_clean[col] > upper_bound
 
-            df_clean.loc[lower_mask, col] = lower_bound
-            df_clean.loc[upper_mask, col] = upper_bound
+        df_clean.loc[lower_mask, col] = lower_bound
+        df_clean.loc[upper_mask, col] = upper_bound
 
-            modifications[col].update({
-                'modified_count': (lower_mask | upper_mask).sum(),
-                'lower_bound': lower_bound,
-                'upper_bound': upper_bound
-            })
-
-        # Birth Year
-        birth_lower = df_clean['Birth Year'].quantile(0.001)
-        birth_upper = df_clean['Birth Year'].quantile(0.999)
-        birth_lower_mask = df_clean['Birth Year'] < birth_lower
-        birth_upper_mask = df_clean['Birth Year'] > birth_upper
-
-        df_clean.loc[birth_lower_mask, 'Birth Year'] = birth_lower
-        df_clean.loc[birth_upper_mask, 'Birth Year'] = birth_upper
-
-        modifications['Birth Year'].update({
-            'modified_count': (birth_lower_mask | birth_upper_mask).sum(),
-            'lower_bound': birth_lower,
-            'upper_bound': birth_upper
+        modifications[col].update({
+            'modified_count': (lower_mask | upper_mask).sum(),
+            'lower_bound': lower_bound,
+            'upper_bound': upper_bound
         })
 
-        # IME-4 Count
-        ime_lower = df_clean['IME-4 Count'].quantile(0.025)
-        ime_upper = df_clean['IME-4 Count'].quantile(0.975)
-        ime_lower_mask = df_clean['IME-4 Count'] < ime_lower
-        ime_upper_mask = df_clean['IME-4 Count'] > ime_upper
+    # Birth Year
+    birth_lower = df_clean['Birth Year'].quantile(0.001)
+    birth_upper = df_clean['Birth Year'].quantile(0.999)
+    birth_lower_mask = df_clean['Birth Year'] < birth_lower
+    birth_upper_mask = df_clean['Birth Year'] > birth_upper
 
-        df_clean.loc[ime_lower_mask, 'IME-4 Count'] = ime_lower
-        df_clean.loc[ime_upper_mask, 'IME-4 Count'] = ime_upper
+    df_clean.loc[birth_lower_mask, 'Birth Year'] = birth_lower
+    df_clean.loc[birth_upper_mask, 'Birth Year'] = birth_upper
 
-        modifications['IME-4 Count'].update({
-            'modified_count': (ime_lower_mask | ime_upper_mask).sum(),
-            'lower_bound': ime_lower,
-            'upper_bound': ime_upper
-        })
+    modifications['Birth Year'].update({
+        'modified_count': (birth_lower_mask | birth_upper_mask).sum(),
+        'lower_bound': birth_lower,
+        'upper_bound': birth_upper
+    })
+
+    # IME-4 Count
+    ime_lower = df_clean['IME-4 Count'].quantile(0.025)
+    ime_upper = df_clean['IME-4 Count'].quantile(0.975)
+    ime_lower_mask = df_clean['IME-4 Count'] < ime_lower
+    ime_upper_mask = df_clean['IME-4 Count'] > ime_upper
+
+    df_clean.loc[ime_lower_mask, 'IME-4 Count'] = ime_lower
+    df_clean.loc[ime_upper_mask, 'IME-4 Count'] = ime_upper
+
+    modifications['IME-4 Count'].update({
+        'modified_count': (ime_lower_mask | ime_upper_mask).sum(),
+        'lower_bound': ime_lower,
+        'upper_bound': ime_upper
+    })
 
         # Average Weekly Wage
         wage_lower = df_clean['Average Weekly Wage'].quantile(0.0025)
