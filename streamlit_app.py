@@ -153,7 +153,8 @@ with st.expander('Prediction'):
     test
 
     
-    train = pd.read_csv('train_data_mok.csv', indexcol=0)
+    train = pd.read_csv('train_data_mok.csv')
+
 
 
             
