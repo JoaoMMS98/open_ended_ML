@@ -251,10 +251,10 @@ def apply_scaling(df_input: Union[pd.DataFrame, Tuple], scalers: Dict) -> pd.Dat
             val_scaled = apply_scaling(val_clean, scalers)
             test_scaled = apply_scaling(test_clean, scalers)
 
-    except TypeError as e:
-        print(f"TypeError occurred: {e}")
-    except ValueError as e:
-        print(f"ValueError occurred: {e}")
+        except TypeError as e:
+            print(f"TypeError occurred: {e}")
+        except ValueError as e:
+            print(f"ValueError occurred: {e}")
 
     Accident_Date = st.date_input("Accident Date", datetime.date(2024, 12, 11))
 
