@@ -243,7 +243,7 @@ def apply_scaling(df_input: Union[pd.DataFrame, Tuple], scalers: Dict) -> pd.Dat
         return df_scaled
 
         # Execution pipeline with error handling
-        try:
+     try:
         # Initial scaling on training data
         train_scaled, scalers = scale_features(train_clean)
 
