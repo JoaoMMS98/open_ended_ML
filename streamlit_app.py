@@ -181,27 +181,27 @@ with st.expander('Prediction'):
     train['Birth Year'] = train['Birth Year'].replace(0, np.nan)
 
     def missing_value_summary(dataframe):
-    nan_columns = dataframe.columns[dataframe.isna().any()].tolist()
+        nan_columns = dataframe.columns[dataframe.isna().any()].tolist()
     
-    summary_data = []
+        summary_data = []
     
-    for column in nan_columns:
+        for column in nan_columns:
 
-        nan_number = dataframe[column].isna().sum()
+            nan_number = dataframe[column].isna().sum()
 
-        nan_percentage = (nan_number / len(dataframe)) * 100
+            nan_percentage = (nan_number / len(dataframe)) * 100
 
-        unique_values = dataframe[column].nunique()
+            unique_values = dataframe[column].nunique()
         
-        summary_data.append({
-            'Unique Values': unique_values,
-            'NaN Values': nan_number,
-            'Percentage NaN': nan_percentage
-        })
+            summary_data.append({
+                'Unique Values': unique_values,
+                'NaN Values': nan_number,
+                'Percentage NaN': nan_percentage
+            })
     
-    summary = pd.DataFrame(summary_data, index=nan_columns)
+        summary = pd.DataFrame(summary_data, index=nan_columns)
     
-    return summary
+        return summary
 
     train['IME-4 Count'] = train['IME-4 Count'].fillna(0)
     test['IME-4 Count'] = test['IME-4 Count'].fillna(0)
