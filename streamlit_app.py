@@ -662,7 +662,7 @@ with st.expander('Input Data'):
     
        """
       # Define WCIO features
-        wcio_features = ['WCIO_Cause_of_Injury_Code', 'WCIO_Nature_of_Injury_Code', 'WCIO_Part_Of_Body_Code']
+        wcio_features = df['WCIO_Cause_of_Injury_Code', 'WCIO_Nature_of_Injury_Code', 'WCIO_Part_Of_Body_Code']
     
         # Check for missing values in WCIO features
         if df[wcio_features].isnull().any().any():
