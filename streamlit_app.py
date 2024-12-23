@@ -16,266 +16,268 @@ from sklearn.decomposition import PCA
 
 st.title('To Grant or Not To Grant')
 
-def engineer_features(df):
-   # WCIO PCA
-   wcio_features = ['WCIO Nature of Injury Code', 'WCIO Part Of Body Code', 'WCIO Cause of Injury Code']
-   pca = PCA(n_components=2)
-   wcio_pca = pca.fit_transform(StandardScaler().fit_transform(df[wcio_features]))
-   df['wcio_pca1'] = wcio_pca[:, 0]
-   df['wcio_pca2'] = wcio_pca[:, 1]
-
-   # Region clustering
-   df['region_cluster'] = df['Medical Fee Region'].astype(str) + '_' + df['Zip Code'].astype(str) + df['County of Injury'].astype(str)
-
-   # Market indicator based on WCIO frequencies
-   high_risk_nature = [20658, 12456, 28947]
-   high_risk_body = [11229, 8780, 3028]
-   high_risk_cause = [20096, 12441, 18015, 340, 1989]
-
-   # Add high risk indicators
-   df['high_risk_nature'] = df['WCIO Nature of Injury Code'].isin(high_risk_nature).astype(int)
-   df['high_risk_body'] = df['WCIO Part Of Body Code'].isin(high_risk_body).astype(int)
-   df['high_risk_cause'] = df['WCIO Cause of Injury Code'].isin(high_risk_cause).astype(int)
-
-   df['market_indicator'] = ((df['high_risk_nature']) |
-                          (df['high_risk_body']) |
-                          (df['high_risk_cause'])).astype(int)
-
-   # Drop redundant columns
-   cols_to_drop = [] #'Birth Year', 'COVID-19 Indicator_Y' + wcio_features
-
-   return df.drop(columns=cols_to_drop)
-    
-def missing_value_summary(dataframe):
-    nan_columns = dataframe.columns[dataframe.isna().any()].tolist()
-    
-    summary_data = []
-    
-    for column in nan_columns:
-
-        nan_number = dataframe[column].isna().sum()
-
-        nan_percentage = (nan_number / len(dataframe)) * 100
-
-        unique_values = dataframe[column].nunique()
-        
-        summary_data.append({
-            'Unique Values': unique_values,
-            'NaN Values': nan_number,
-            'Percentage NaN': nan_percentage
-        })
-    
-    summary = pd.DataFrame(summary_data, index=nan_columns)
-    
-    return summary
-
-def fix_zip_code(x):
-    if isinstance(x, float) and x.is_integer():
-        return str(int(x))[:5]
-    if isinstance(x, str) and x.isnumeric():
-        return str(int(x))[:5]
-    try:
-        return(str(int(x))[:5])
-    except:
-        warnings.warn("x cannot be turned into a string of 5 characters", UserWarning)
-
-def calculate_days_until_reference(df, reference_date='2023-12-25'):
-    reference_date = pd.to_datetime(reference_date)
-    date_columns = ['Assembly Date', 'C-2 Date', 'C-3 Date', 'First Hearing Date']
-
-    for col in date_columns:
-        df[col] = pd.to_datetime(df[col])
-        df[col] = (reference_date - df[col]).dt.days
-
-    return df
-
-def handle_outliers(df):
-    df_clean = df.copy()
-    modifications = {}
-
-    # Track modifications for each column
-    for col in df_clean.columns:
-        modifications[col] = {
-            'original_count': len(df_clean),
-            'modified_count': 0,
-            'lower_bound': None,
-            'upper_bound': None
-        }
-
-    # Date fields
-    date_cols = ['C-2 Date', 'C-3 Date', 'First Hearing Date']
-    for col in date_cols:
-        lower_bound = df_clean[col].quantile(0.001)
-        upper_bound = df_clean[col].quantile(0.999)
-        lower_mask = df_clean[col] < lower_bound
-        upper_mask = df_clean[col] > upper_bound
-
-        df_clean.loc[lower_mask, col] = lower_bound
-        df_clean.loc[upper_mask, col] = upper_bound
-
-        modifications[col].update({
-            'modified_count': (lower_mask | upper_mask).sum(),
-            'lower_bound': lower_bound,
-            'upper_bound': upper_bound
-        })
-
-    # Birth Year
-    birth_lower = df_clean['Birth Year'].quantile(0.001)
-    birth_upper = df_clean['Birth Year'].quantile(0.999)
-    birth_lower_mask = df_clean['Birth Year'] < birth_lower
-    birth_upper_mask = df_clean['Birth Year'] > birth_upper
-
-    df_clean.loc[birth_lower_mask, 'Birth Year'] = birth_lower
-    df_clean.loc[birth_upper_mask, 'Birth Year'] = birth_upper
-
-    modifications['Birth Year'].update({
-        'modified_count': (birth_lower_mask | birth_upper_mask).sum(),
-        'lower_bound': birth_lower,
-        'upper_bound': birth_upper
-    })
-
-    # IME-4 Count
-    ime_lower = df_clean['IME-4 Count'].quantile(0.025)
-    ime_upper = df_clean['IME-4 Count'].quantile(0.975)
-    ime_lower_mask = df_clean['IME-4 Count'] < ime_lower
-    ime_upper_mask = df_clean['IME-4 Count'] > ime_upper
-
-    df_clean.loc[ime_lower_mask, 'IME-4 Count'] = ime_lower
-    df_clean.loc[ime_upper_mask, 'IME-4 Count'] = ime_upper
-
-    modifications['IME-4 Count'].update({
-        'modified_count': (ime_lower_mask | ime_upper_mask).sum(),
-        'lower_bound': ime_lower,
-        'upper_bound': ime_upper
-    })
-
-        # Average Weekly Wage
-    wage_lower = df_clean['Average Weekly Wage'].quantile(0.0025)
-    wage_upper = df_clean['Average Weekly Wage'].quantile(0.9975)
-    wage_lower_mask = df_clean['Average Weekly Wage'] < wage_lower
-    wage_upper_mask = df_clean['Average Weekly Wage'] > wage_upper
-
-    df_clean.loc[wage_lower_mask, 'Average Weekly Wage'] = wage_lower
-    df_clean.loc[wage_upper_mask, 'Average Weekly Wage'] = wage_upper
-
-    modifications['Average Weekly Wage'].update({
-        'modified_count': (wage_lower_mask | wage_upper_mask).sum(),
-        'lower_bound': wage_lower,
-        'upper_bound': wage_upper
-    })
-
-    return df_clean, modifications
-
-def validate_input_dataframe(df: Union[pd.DataFrame, Tuple]) -> pd.DataFrame:
-        """
-        Validate and extract DataFrame from input.
-
-        Parameters:
-            df: Input data structure (DataFrame or Tuple)
-
-        Returns:
-        pd.DataFrame: Validated DataFrame
-        """
-        if isinstance(df, pd.DataFrame):
-            return df
-        elif isinstance(df, tuple) and len(df) == 2:
-            if isinstance(df[0], pd.DataFrame):
-                print("Input is a tuple. Extracting DataFrame.")
-                return df[0]
-            else:
-                raise TypeError("Tuple does not contain a DataFrame.")
-        else:
-            raise TypeError("Input must be a pandas DataFrame or a tuple containing a DataFrame.")
-
-def identify_binary_columns(df: pd.DataFrame) -> list:
-    """
-    Identify columns in the DataFrame that are binary.
-
-    Parameters:
-        df: DataFrame to analyze
-
-    Returns:
-        list: List of binary column names
-    """
-    binary_columns = []
-    for col in df.columns:
-        if df[col].nunique() == 2:
-            binary_columns.append(col)
-    return binary_columns
-
-def scale_features(df_input: Union[pd.DataFrame, Tuple]) -> Tuple[pd.DataFrame, Dict]:
-    """
-    Scale continuous features using StandardScaler.
-
-    Parameters:
-        df_input: Input DataFrame or tuple containing DataFrame
-
-    Returns:
-        tuple: (scaled_dataframe, scalers_dictionary)
-    """
-    # Validate input
-    df = validate_input_dataframe(df_input)
-
-    # Identify binary columns
-    binary_cols = identify_binary_columns(df)
-
-    # Get continuous columns
-    continuous_cols = [col for col in df.columns if col not in binary_cols]
-
-    # Initialize scaler
-    scaler = StandardScaler()
-
-    # Scale continuous features
-    df_scaled = df.copy()
-    df_scaled[continuous_cols] = scaler.fit_transform(df[continuous_cols])
-
-    # Return scaled DataFrame and scaler
-    scalers = {'continuous_scaler': scaler, 'binary_columns': binary_cols}
-    return df_scaled, scalers
-
-def apply_scaling(df_input: Union[pd.DataFrame, Tuple], scalers: Dict) -> pd.DataFrame:
-        """
-        Apply scaling to new data using pre-fitted scalers.
-    
-        Parameters:
-            df_input: Input DataFrame or tuple containing DataFrame
-            scalers: Dictionary containing the scaler and binary columns
-
-        Returns:
-            pd.DataFrame: Scaled DataFrame
-        """
-        # Validate input
-        df = validate_input_dataframe(df_input)
-
-        # Get scaler and binary columns from scalers dictionary
-        continuous_scaler = scalers['continuous_scaler']
-        binary_cols = scalers['binary_columns']
-
-        # Get continuous columns present in the new DataFrame
-        continuous_cols = [col for col in df.columns if col not in binary_cols]
-
-        # Apply scaling to continuous features
-        df_scaled = df.copy()
-        df_scaled[continuous_cols] = continuous_scaler.transform(df[continuous_cols])
-
-        return df_scaled
-
-        # Execution pipeline with error handling
-        try:
-        # Initial scaling on training data
-            train_scaled, scalers = scale_features(train_clean)
-
-        # Apply scaling to validation and test sets
-            val_scaled = apply_scaling(val_clean, scalers)
-            test_scaled = apply_scaling(test_clean, scalers)
-
-        except TypeError as e:
-            print(f"TypeError occurred: {e}")
-        except ValueError as e:
-            print(f"ValueError occurred: {e}")
-
 st.header('Input your data here',divider="red")
 with st.expander('Prediction'):
+
+   def engineer_features(df):
+   # WCIO PCA
+      wcio_features = ['WCIO Nature of Injury Code', 'WCIO Part Of Body Code', 'WCIO Cause of Injury Code']
+      pca = PCA(n_components=2)
+      wcio_pca = pca.fit_transform(StandardScaler().fit_transform(df[wcio_features]))
+      df['wcio_pca1'] = wcio_pca[:, 0]
+      df['wcio_pca2'] = wcio_pca[:, 1]
+
+      # Region clustering
+      df['region_cluster'] = df['Medical Fee Region'].astype(str) + '_' + df['Zip Code'].astype(str) + df['County of Injury'].astype(str)
+
+      # Market indicator based on WCIO frequencies
+      high_risk_nature = [20658, 12456, 28947]
+      high_risk_body = [11229, 8780, 3028]
+      high_risk_cause = [20096, 12441, 18015, 340, 1989]
+
+      # Add high risk indicators
+      df['high_risk_nature'] = df['WCIO Nature of Injury Code'].isin(high_risk_nature).astype(int)
+      df['high_risk_body'] = df['WCIO Part Of Body Code'].isin(high_risk_body).astype(int)
+      df['high_risk_cause'] = df['WCIO Cause of Injury Code'].isin(high_risk_cause).astype(int)
+
+      df['market_indicator'] = ((df['high_risk_nature']) |
+                             (df['high_risk_body']) |
+                             (df['high_risk_cause'])).astype(int)
+   
+      # Drop redundant columns
+      cols_to_drop = [] #'Birth Year', 'COVID-19 Indicator_Y' + wcio_features
+
+      return df.drop(columns=cols_to_drop)
+       
+   def missing_value_summary(dataframe):
+       nan_columns = dataframe.columns[dataframe.isna().any()].tolist()
+    
+       summary_data = []
+    
+       for column in nan_columns:
+
+           nan_number = dataframe[column].isna().sum()
+   
+           nan_percentage = (nan_number / len(dataframe)) * 100
+
+           unique_values = dataframe[column].nunique()
+        
+           summary_data.append({
+               'Unique Values': unique_values,
+               'NaN Values': nan_number,
+               'Percentage NaN': nan_percentage
+           })
+    
+       summary = pd.DataFrame(summary_data, index=nan_columns)
+    
+       return summary
+
+   def fix_zip_code(x):
+       if isinstance(x, float) and x.is_integer():
+           return str(int(x))[:5]
+       if isinstance(x, str) and x.isnumeric():
+           return str(int(x))[:5]
+       try:
+           return(str(int(x))[:5])
+       except:
+           warnings.warn("x cannot be turned into a string of 5 characters", UserWarning)
+
+   def calculate_days_until_reference(df, reference_date='2023-12-25'):
+       reference_date = pd.to_datetime(reference_date)
+       date_columns = ['Assembly Date', 'C-2 Date', 'C-3 Date', 'First Hearing Date']
+
+       for col in date_columns:
+           df[col] = pd.to_datetime(df[col])
+           df[col] = (reference_date - df[col]).dt.days
+
+       return df
+
+   def handle_outliers(df):
+       df_clean = df.copy()
+       modifications = {}
+
+       # Track modifications for each column
+       for col in df_clean.columns:
+           modifications[col] = {
+               'original_count': len(df_clean),
+               'modified_count': 0,
+               'lower_bound': None,
+               'upper_bound': None
+           }
+
+       # Date fields
+       date_cols = ['C-2 Date', 'C-3 Date', 'First Hearing Date']
+       for col in date_cols:
+           lower_bound = df_clean[col].quantile(0.001)
+           upper_bound = df_clean[col].quantile(0.999)
+           lower_mask = df_clean[col] < lower_bound
+           upper_mask = df_clean[col] > upper_bound
+
+           df_clean.loc[lower_mask, col] = lower_bound
+           df_clean.loc[upper_mask, col] = upper_bound
+
+           modifications[col].update({
+               'modified_count': (lower_mask | upper_mask).sum(),
+               'lower_bound': lower_bound,
+               'upper_bound': upper_bound
+           })
+
+       # Birth Year
+       birth_lower = df_clean['Birth Year'].quantile(0.001)
+       birth_upper = df_clean['Birth Year'].quantile(0.999)
+       birth_lower_mask = df_clean['Birth Year'] < birth_lower
+       birth_upper_mask = df_clean['Birth Year'] > birth_upper
+
+       df_clean.loc[birth_lower_mask, 'Birth Year'] = birth_lower
+       df_clean.loc[birth_upper_mask, 'Birth Year'] = birth_upper
+
+       modifications['Birth Year'].update({
+           'modified_count': (birth_lower_mask | birth_upper_mask).sum(),
+           'lower_bound': birth_lower,
+           'upper_bound': birth_upper
+       })
+
+       # IME-4 Count
+       ime_lower = df_clean['IME-4 Count'].quantile(0.025)
+       ime_upper = df_clean['IME-4 Count'].quantile(0.975)
+       ime_lower_mask = df_clean['IME-4 Count'] < ime_lower
+       ime_upper_mask = df_clean['IME-4 Count'] > ime_upper
+
+       df_clean.loc[ime_lower_mask, 'IME-4 Count'] = ime_lower
+       df_clean.loc[ime_upper_mask, 'IME-4 Count'] = ime_upper
+
+       modifications['IME-4 Count'].update({
+           'modified_count': (ime_lower_mask | ime_upper_mask).sum(),
+           'lower_bound': ime_lower,
+           'upper_bound': ime_upper
+       })
+
+           # Average Weekly Wage
+       wage_lower = df_clean['Average Weekly Wage'].quantile(0.0025)
+       wage_upper = df_clean['Average Weekly Wage'].quantile(0.9975)
+       wage_lower_mask = df_clean['Average Weekly Wage'] < wage_lower
+       wage_upper_mask = df_clean['Average Weekly Wage'] > wage_upper
+
+       df_clean.loc[wage_lower_mask, 'Average Weekly Wage'] = wage_lower
+       df_clean.loc[wage_upper_mask, 'Average Weekly Wage'] = wage_upper
+
+       modifications['Average Weekly Wage'].update({
+           'modified_count': (wage_lower_mask | wage_upper_mask).sum(),
+           'lower_bound': wage_lower,
+           'upper_bound': wage_upper
+       })
+
+       return df_clean, modifications
+
+   def validate_input_dataframe(df: Union[pd.DataFrame, Tuple]) -> pd.DataFrame:
+           """
+           Validate and extract DataFrame from input.
+
+           Parameters:
+               df: Input data structure (DataFrame or Tuple)
+
+           Returns:
+           pd.DataFrame: Validated DataFrame
+           """
+           if isinstance(df, pd.DataFrame):
+               return df
+           elif isinstance(df, tuple) and len(df) == 2:
+               if isinstance(df[0], pd.DataFrame):
+                   print("Input is a tuple. Extracting DataFrame.")
+                   return df[0]
+               else:
+                   raise TypeError("Tuple does not contain a DataFrame.")
+           else:
+               raise TypeError("Input must be a pandas DataFrame or a tuple containing a DataFrame.")
+
+   def identify_binary_columns(df: pd.DataFrame) -> list:
+       """
+       Identify columns in the DataFrame that are binary.
+
+       Parameters:
+           df: DataFrame to analyze
+
+       Returns:
+           list: List of binary column names
+       """
+       binary_columns = []
+       for col in df.columns:
+           if df[col].nunique() == 2:
+               binary_columns.append(col)
+       return binary_columns
+
+   def scale_features(df_input: Union[pd.DataFrame, Tuple]) -> Tuple[pd.DataFrame, Dict]:
+       """
+       Scale continuous features using StandardScaler.
+
+       Parameters:
+           df_input: Input DataFrame or tuple containing DataFrame
+
+       Returns:
+           tuple: (scaled_dataframe, scalers_dictionary)
+       """
+       # Validate input
+       df = validate_input_dataframe(df_input)
+
+       # Identify binary columns
+       binary_cols = identify_binary_columns(df)
+
+       # Get continuous columns
+       continuous_cols = [col for col in df.columns if col not in binary_cols]
+
+       # Initialize scaler
+       scaler = StandardScaler()
+
+       # Scale continuous features
+       df_scaled = df.copy()
+       df_scaled[continuous_cols] = scaler.fit_transform(df[continuous_cols])
+
+       # Return scaled DataFrame and scaler
+       scalers = {'continuous_scaler': scaler, 'binary_columns': binary_cols}
+       return df_scaled, scalers
+
+   def apply_scaling(df_input: Union[pd.DataFrame, Tuple], scalers: Dict) -> pd.DataFrame:
+           """
+           Apply scaling to new data using pre-fitted scalers.
+    
+           Parameters:
+               df_input: Input DataFrame or tuple containing DataFrame
+               scalers: Dictionary containing the scaler and binary columns
+
+           Returns:
+               pd.DataFrame: Scaled DataFrame
+           """
+           # Validate input
+           df = validate_input_dataframe(df_input)
+
+           # Get scaler and binary columns from scalers dictionary
+           continuous_scaler = scalers['continuous_scaler']
+           binary_cols = scalers['binary_columns']
+
+           # Get continuous columns present in the new DataFrame
+           continuous_cols = [col for col in df.columns if col not in binary_cols]
+
+           # Apply scaling to continuous features
+           df_scaled = df.copy()
+           df_scaled[continuous_cols] = continuous_scaler.transform(df[continuous_cols])
+
+           return df_scaled
+
+           # Execution pipeline with error handling
+           try:
+           # Initial scaling on training data
+               train_scaled, scalers = scale_features(train_clean)
+
+           # Apply scaling to validation and test sets
+               val_scaled = apply_scaling(val_clean, scalers)
+               test_scaled = apply_scaling(test_clean, scalers)
+
+           except TypeError as e:
+               print(f"TypeError occurred: {e}")
+           except ValueError as e:
+               print(f"ValueError occurred: {e}")
+
+
 
     Accident_Date = st.date_input("Accident Date", datetime.date(2024, 12, 11))
 
