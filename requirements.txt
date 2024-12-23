@@ -3,5 +3,5 @@ numpy
 pandas
 scikit.learn
 xgboost
-scikit-learn
+sklearn.preprocessing
 seaborn
