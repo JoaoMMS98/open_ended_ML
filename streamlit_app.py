@@ -5,7 +5,7 @@ import streamlit as st
 import pandas as pd
 import datetime
 from xgboost import XGBClassifier
-from sklearn.preprocessing import LabelEncoder
+from scikit-learn.preprocessing import LabelEncoder
 import numpy as np
 
 
