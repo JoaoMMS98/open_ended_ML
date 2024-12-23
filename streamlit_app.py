@@ -392,9 +392,11 @@ with st.expander('Input Data'):
     
     train = train.drop(columns=['Industry Code Description'])
     test = test.drop(columns=['Industry Code Description'])
+       
     claimMode = train['Claim Identifier'].mode()
     claimDateModeIndex = list(train[train['Claim Identifier'] == claimMode[0]].index)
     claimDateModeIndex
+       
     train.drop(claimDateModeIndex, inplace=True)
 
     train.set_index('Claim Identifier', inplace=True)
@@ -468,221 +470,174 @@ with st.expander('Input Data'):
     x = train.drop(columns= 'Claim Injury Type')
     y = train['Claim Injury Type']
 
-    train_set, val_set, y_train, y_val = train_test_split(x,
-                                                    y,
-                                                    test_size=0.2,
-                                                    random_state=42,
-                                                    shuffle=True,
-                                                    stratify=y
-                                                   )
 
-    train_set['Accident Date'] = pd.to_datetime(train_set['Accident Date'])
-    val_set['Accident Date'] = pd.to_datetime(val_set['Accident Date'])
+
+    train['Accident Date'] = pd.to_datetime(train['Accident Date'])
     test['Accident Date'] = pd.to_datetime(test['Accident Date'])
 
-    train_set['Accident Year'] = train_set['Accident Date'].apply(lambda x: x.year)
-    val_set['Accident Year'] = val_set['Accident Date'].apply(lambda x: x.year)
+    train['Accident Year'] = train['Accident Date'].apply(lambda x: x.year)
     test['Accident Year'] = test['Accident Date'].apply(lambda x: x.year)
     
-    train_set['Accident Month'] = train_set['Accident Date'].apply(lambda x: x.month)
-    val_set['Accident Month'] = val_set['Accident Date'].apply(lambda x: x.month)
+    train['Accident Month'] = train['Accident Date'].apply(lambda x: x.month)
     test['Accident Month'] = test['Accident Date'].apply(lambda x: x.month)
 
-    train_set['Accident Day'] = train_set['Accident Date'].apply(lambda x: x.day)
-    val_set['Accident Day'] = val_set['Accident Date'].apply(lambda x: x.day)
+    train['Accident Day'] = train['Accident Date'].apply(lambda x: x.day)
     test['Accident Day'] = test['Accident Date'].apply(lambda x: x.day)
 
-    train_set.apply(lambda row: row['Accident Year'] - row['Birth Year'] == row['Age at Injury'], axis=1).value_counts()
+    train.apply(lambda row: row['Accident Year'] - row['Birth Year'] == row['Age at Injury'], axis=1).value_counts()
 
-    train_set.loc[train_set['Birth Year'].isna() & train_set['Accident Year'].notna() & train_set['Age at Injury'].notna(), 'Birth Year'] = (
-    train_set['Accident Year'] - train_set['Age at Injury'])
+    train.loc[train['Birth Year'].isna() & train['Accident Year'].notna() & train['Age at Injury'].notna(), 'Birth Year'] = (
+    train['Accident Year'] - train['Age at Injury'])
 
-    val_set.loc[val_set['Birth Year'].isna() & val_set['Accident Year'].notna() & val_set['Age at Injury'].notna(), 'Birth Year'] = (
-    val_set['Accident Year'] - val_set['Age at Injury'])
 
-    train_set.loc[train_set["Birth Year"] == train_set["Accident Year"], "Birth Year"] = np.nan
-    val_set.loc[val_set["Birth Year"] == val_set["Accident Year"], "Birth Year"] = np.nan
 
-    train_set['Age at Injury'] = train_set['Accident Year'] - train_set['Birth Year']
-    val_set['Age at Injury'] = val_set['Accident Year'] - val_set['Birth Year']
+    train.loc[train["Birth Year"] == train["Accident Year"], "Birth Year"] = np.nan
+  
+
+    train['Age at Injury'] = train['Accident Year'] - train['Birth Year']
 
    
 
 
-    train_set['Zip Code'] = train_set['Zip Code'].apply(fix_zip_code)
-    val_set['Zip Code'] = val_set['Zip Code'].apply(fix_zip_code)
+    train['Zip Code'] = train['Zip Code'].apply(fix_zip_code)
 
-    train_set['Assembly Date'] = pd.to_datetime(train_set['Assembly Date'])
-    train_set['Accident Date'] = pd.to_datetime(train_set['Accident Date'])
-    train_set['Days_to_Assembly'] = (train_set['Assembly Date'] - train_set['Accident Date']).dt.days
+    train['Assembly Date'] = pd.to_datetime(train['Assembly Date'])
+    train['Accident Date'] = pd.to_datetime(train['Accident Date'])
+    train['Days_to_Assembly'] = (train['Assembly Date'] - train['Accident Date']).dt.days
 
-    val_set['Assembly Date'] = pd.to_datetime(val_set['Assembly Date'])
-    val_set['Accident Date'] = pd.to_datetime(val_set['Accident Date'])
-    val_set['Days_to_Assembly'] = (val_set['Assembly Date'] - val_set['Accident Date']).dt.days
 
     test['Assembly Date'] = pd.to_datetime(test['Assembly Date'])
     test['Accident Date'] = pd.to_datetime(test['Accident Date'])
     test['Days_to_Assembly'] = (test['Assembly Date'] - test['Accident Date']).dt.days
 
-    train_set['Days_to_Assembly'] = (train_set['Assembly Date'] - train_set['Accident Date']).dt.days
-    val_set['Days_to_Assembly'] = (val_set['Assembly Date'] - val_set['Accident Date']).dt.days
+    train['Days_to_Assembly'] = (train['Assembly Date'] - train['Accident Date']).dt.days
     test['Days_to_Assembly'] = (test['Assembly Date'] - test['Accident Date']).dt.days
 
-    train_set['Days_to_Assembly'] = train_set['Days_to_Assembly'].apply((lambda x: 1 if x < 365 else 0))
-    val_set['Days_to_Assembly'] = val_set['Days_to_Assembly'].apply((lambda x: 1 if x < 365 else 0))
+    train['Days_to_Assembly'] = train['Days_to_Assembly'].apply((lambda x: 1 if x < 365 else 0))
     test['Days_to_Assembly'] = test['Days_to_Assembly'].apply((lambda x: 1 if x < 365 else 0))
 
-    train_set['Under_20'] = (train_set['Age at Injury'] < 20).astype(int)
-    train_set['Age_21_40'] = ((train_set['Age at Injury'] >= 21) & (train_set['Age at Injury'] <= 40)).astype(int)
-    train_set['Age_41_65'] = ((train_set['Age at Injury'] >= 41) & (train_set['Age at Injury'] <= 65)).astype(int)
-    train_set['Above_65'] = (train_set['Age at Injury'] > 65).astype(int)
+    train['Under_20'] = (train['Age at Injury'] < 20).astype(int)
+    train['Age_21_40'] = ((train['Age at Injury'] >= 21) & (train['Age at Injury'] <= 40)).astype(int)
+    train['Age_41_65'] = ((train['Age at Injury'] >= 41) & (train['Age at Injury'] <= 65)).astype(int)
+    train['Above_65'] = (train['Age at Injury'] > 65).astype(int)
 
-    val_set['Under_20'] = (val_set['Age at Injury'] < 20).astype(int)
-    val_set['Age_21_40'] = ((val_set['Age at Injury'] >= 21) & (val_set['Age at Injury'] <= 40)).astype(int)
-    val_set['Age_41_65'] = ((val_set['Age at Injury'] >= 41) & (val_set['Age at Injury'] <= 65)).astype(int)
-    val_set['Above_65'] = (val_set['Age at Injury'] > 65).astype(int)
 
     test['Under_20'] = (test['Age at Injury'] < 20).astype(int)
     test['Age_21_40'] = ((test['Age at Injury'] >= 21) & (test['Age at Injury'] <= 40)).astype(int)
     test['Age_41_65'] = ((test['Age at Injury'] >= 41) & (test['Age at Injury'] <= 65)).astype(int)
     test['Above_65'] = (test['Age at Injury'] > 65).astype(int)
 
-    train_set = train_set.drop(columns = ['Accident Date', 'Age at Injury'])
-    val_set = val_set.drop(columns = ['Accident Date', 'Age at Injury'])
+    train = train.drop(columns = ['Accident Date', 'Age at Injury'])
     test = test.drop(columns = ['Accident Date', 'Age at Injury'])
 
-    frequency_map_dependents = train_set['Number of Dependents'].value_counts(normalize=True)
+    frequency_map_dependents = train['Number of Dependents'].value_counts(normalize=True)
 
-    train_set['Number of Dependents'] = train_set['Number of Dependents'].map(frequency_map_dependents)
-    val_set['Number of Dependents'] = val_set['Number of Dependents'].map(frequency_map_dependents)
+    train['Number of Dependents'] = train['Number of Dependents'].map(frequency_map_dependents)
     test['Number of Dependents'] = test['Number of Dependents'].map(frequency_map_dependents)
 
-    train_set['Accident Month Sin'] = np.sin(2 * np.pi * train_set['Accident Month'] / 12)
-    train_set['Accident Month Cos'] = np.cos(2 * np.pi * train_set['Accident Month'] / 12)
+    train['Accident Month Sin'] = np.sin(2 * np.pi * train['Accident Month'] / 12)
+    train['Accident Month Cos'] = np.cos(2 * np.pi * train['Accident Month'] / 12)
 
-    val_set['Accident Month Sin'] = np.sin(2 * np.pi * val_set['Accident Month'] / 12)
-    val_set['Accident Month Cos'] = np.cos(2 * np.pi * val_set['Accident Month'] / 12)
 
     test['Accident Month Sin'] = np.sin(2 * np.pi * test['Accident Month'] / 12)
     test['Accident Month Cos'] = np.cos(2 * np.pi * test['Accident Month'] / 12)
 
    
-    train_set['Accident Day Sin'] = np.sin(2 * np.pi * train_set['Accident Day'] / 31)
-    train_set['Accident Day Cos'] = np.cos(2 * np.pi * train_set['Accident Day'] / 31)
+    train['Accident Day Sin'] = np.sin(2 * np.pi * train['Accident Day'] / 31)
+    train['Accident Day Cos'] = np.cos(2 * np.pi * train['Accident Day'] / 31)
 
-    val_set['Accident Day Sin'] = np.sin(2 * np.pi * val_set['Accident Day'] / 31)
-    val_set['Accident Day Cos'] = np.cos(2 * np.pi * val_set['Accident Day'] / 31)
 
     test['Accident Day Sin'] = np.sin(2 * np.pi * test['Accident Day'] / 31)
     test['Accident Day Cos'] = np.cos(2 * np.pi * test['Accident Day'] / 31)
 
 
-    train_set["Received_C2"] = train_set["C-2 Date"].apply(lambda x: 0 if pd.isna(x) else 1)
-    val_set["Received_C2"] = val_set["C-2 Date"].apply(lambda x: 0 if pd.isna(x) else 1)
+    train["Received_C2"] = train["C-2 Date"].apply(lambda x: 0 if pd.isna(x) else 1)
     test["Received_C2"] = test["C-2 Date"].apply(lambda x: 0 if pd.isna(x) else 1)
 
-    train_set["Received_C3"] = train_set["C-3 Date"].apply(lambda x: 0 if pd.isna(x) else 1)
-    val_set["Received_C3"] = val_set["C-3 Date"].apply(lambda x: 0 if pd.isna(x) else 1)
+    train["Received_C3"] = train["C-3 Date"].apply(lambda x: 0 if pd.isna(x) else 1)
     test["Received_C3"] = test["C-3 Date"].apply(lambda x: 0 if pd.isna(x) else 1)
 
-    train_set["Hearing_held"] = train_set["First Hearing Date"].apply(lambda x: 0 if pd.isna(x) else 1)
-    val_set["Hearing_held"] = val_set["First Hearing Date"].apply(lambda x: 0 if pd.isna(x) else 1)
+    train["Hearing_held"] = train["First Hearing Date"].apply(lambda x: 0 if pd.isna(x) else 1)
     test["Hearing_held"] = test["First Hearing Date"].apply(lambda x: 0 if pd.isna(x) else 1)
 
-    train_set = pd.get_dummies(train_set, columns=['Attorney/Representative', 'COVID-19 Indicator','Alternative Dispute Resolution', 'Gender'], drop_first=True, dtype=int)
-    val_set = pd.get_dummies(val_set, columns=['Attorney/Representative', 'COVID-19 Indicator','Alternative Dispute Resolution', 'Gender'], drop_first=True, dtype=int)
+    train = pd.get_dummies(train, columns=['Attorney/Representative', 'COVID-19 Indicator','Alternative Dispute Resolution', 'Gender'], drop_first=True, dtype=int)
     test = pd.get_dummies(test, columns=['Attorney/Representative', 'COVID-19 Indicator','Alternative Dispute Resolution', 'Gender'], drop_first=True, dtype=int)
 
-    train_set.drop(columns='Gender_U', inplace=True, errors='ignore')
-    val_set.drop(columns='Gender_U', inplace=True, errors='ignore')
+    train.drop(columns='Gender_U', inplace=True, errors='ignore')
     test.drop(columns='Gender_U', inplace=True, errors='ignore')
-    train_set.drop(columns='Gender_X', inplace=True, errors='ignore')
-    val_set.drop(columns='Gender_X', inplace=True, errors='ignore')
+    train.drop(columns='Gender_X', inplace=True, errors='ignore')
     test.drop(columns='Gender_X', inplace=True, errors='ignore')
 
-    frequency_map_ic = train_set['Industry Code'].value_counts(normalize=False)
+    frequency_map_ic = train['Industry Code'].value_counts(normalize=False)
 
-    train_set['Industry Code'] = train_set['Industry Code'].map(frequency_map_ic)
-    val_set['Industry Code'] = val_set['Industry Code'].map(frequency_map_ic)
+    train['Industry Code'] = train['Industry Code'].map(frequency_map_ic)
     test['Industry Code'] = test['Industry Code'].map(frequency_map_ic)
     
-    frequency_map_wcio_ic = train_set['WCIO Cause of Injury Code'].value_counts(normalize=False)
+    frequency_map_wcio_ic = train['WCIO Cause of Injury Code'].value_counts(normalize=False)
 
-    train_set['WCIO Cause of Injury Code'] = train_set['WCIO Cause of Injury Code'].map(frequency_map_wcio_ic)
-    val_set['WCIO Cause of Injury Code'] = val_set['WCIO Cause of Injury Code'].map(frequency_map_wcio_ic)
+    train['WCIO Cause of Injury Code'] = train['WCIO Cause of Injury Code'].map(frequency_map_wcio_ic)
     test['WCIO Cause of Injury Code'] = test['WCIO Cause of Injury Code'].map(frequency_map_wcio_ic)
 
-    frequency_map_wcio_nic = train_set['WCIO Nature of Injury Code'].value_counts(normalize=False)
+    frequency_map_wcio_nic = train['WCIO Nature of Injury Code'].value_counts(normalize=False)
 
-    train_set['WCIO Nature of Injury Code'] = train_set['WCIO Nature of Injury Code'].map(frequency_map_wcio_nic)
-    val_set['WCIO Nature of Injury Code'] = val_set['WCIO Nature of Injury Code'].map(frequency_map_wcio_nic)
+    train['WCIO Nature of Injury Code'] = train['WCIO Nature of Injury Code'].map(frequency_map_wcio_nic)
     test['WCIO Nature of Injury Code'] = test['WCIO Nature of Injury Code'].map(frequency_map_wcio_nic)
 
-    frequency_map_wcio_pbc = train_set['WCIO Part Of Body Code'].value_counts(normalize=False)
+    frequency_map_wcio_pbc = train['WCIO Part Of Body Code'].value_counts(normalize=False)
 
-    train_set['WCIO Part Of Body Code'] = train_set['WCIO Part Of Body Code'].map(frequency_map_wcio_pbc)
-    val_set['WCIO Part Of Body Code'] = val_set['WCIO Part Of Body Code'].map(frequency_map_wcio_pbc)
+    train['WCIO Part Of Body Code'] = train['WCIO Part Of Body Code'].map(frequency_map_wcio_pbc)
     test['WCIO Part Of Body Code'] = test['WCIO Part Of Body Code'].map(frequency_map_wcio_pbc)
 
-    frequency_map_mfr = train_set['Medical Fee Region'].value_counts(normalize=False)
+    frequency_map_mfr = train['Medical Fee Region'].value_counts(normalize=False)
 
-    train_set['Medical Fee Region'] = train_set['Medical Fee Region'].map(frequency_map_mfr)
-    val_set['Medical Fee Region'] = val_set['Medical Fee Region'].map(frequency_map_mfr)
+    train['Medical Fee Region'] = train['Medical Fee Region'].map(frequency_map_mfr)
     test['Medical Fee Region'] = test['Medical Fee Region'].map(frequency_map_mfr)
 
-    frequency_map_ct = train_set['Carrier Type'].value_counts(normalize=False)
-    frequency_map_cn = train_set['Carrier Name'].value_counts(normalize=False)
-    frequency_map_coi = train_set['County of Injury'].value_counts(normalize=False)
-    frequency_map_dn = train_set['District Name'].value_counts(normalize=False)
+    frequency_map_ct = train['Carrier Type'].value_counts(normalize=False)
+    frequency_map_cn = train['Carrier Name'].value_counts(normalize=False)
+    frequency_map_coi = train['County of Injury'].value_counts(normalize=False)
+    frequency_map_dn = train['District Name'].value_counts(normalize=False)
 
-    train_set['Carrier Type'] = train_set['Carrier Type'].map(frequency_map_ct)
-    val_set['Carrier Type'] = val_set['Carrier Type'].map(frequency_map_ct)
+    train['Carrier Type'] = train['Carrier Type'].map(frequency_map_ct)
     test['Carrier Type'] = test['Carrier Type'].map(frequency_map_ct)
 
-    train_set['Carrier Name'] = train_set['Carrier Name'].map(frequency_map_cn)
-    val_set['Carrier Name'] = val_set['Carrier Name'].map(frequency_map_cn)
+    train['Carrier Name'] = train['Carrier Name'].map(frequency_map_cn)
     test['Carrier Name'] = test['Carrier Name'].map(frequency_map_cn)
 
-    train_set['County of Injury'] = train_set['County of Injury'].map(frequency_map_coi)
-    val_set['County of Injury'] = val_set['County of Injury'].map(frequency_map_coi)
+    train['County of Injury'] = train['County of Injury'].map(frequency_map_coi)
     test['County of Injury'] = test['County of Injury'].map(frequency_map_coi)
 
-    train_set['District Name'] = train_set['District Name'].map(frequency_map_dn)
-    val_set['District Name'] = val_set['District Name'].map(frequency_map_dn)
+    train['District Name'] = train['District Name'].map(frequency_map_dn)
     test['District Name'] = test['District Name'].map(frequency_map_dn)
     
     col_fill_median = ['Average Weekly Wage', 'Birth Year', 'Accident Year']
 
     for col in col_fill_median:
-        median_value = train_set[col].median()
+        median_value = train[col].median()
 
-        train_set[col].fillna(median_value, inplace=True)
-        val_set[col].fillna(median_value, inplace=True)
+        train[col].fillna(median_value, inplace=True)
         test[col].fillna(median_value, inplace=True)
 
     col_fill_mode = ['C-2 Date', 'C-3 Date', 'First Hearing Date', 'Zip Code']
 
     for col in col_fill_mode:
-        mode_value = train_set[col].mode()[0]
+        mode_value = train[col].mode()[0]
 
-        train_set[col].fillna(mode_value, inplace=True)
-        val_set[col].fillna(mode_value, inplace=True)
+        train[col].fillna(mode_value, inplace=True)
         test[col].fillna(mode_value, inplace=True)
 
     
     
 
-    train_set = calculate_days_until_reference(train_set)
-    val_set = calculate_days_until_reference(val_set)
+    train = calculate_days_until_reference(train)
     test = calculate_days_until_reference(test)
 
-    train_numerical = train_set.select_dtypes(include='number')
-    train_categorical = train_set.select_dtypes(include='object')
+    train_numerical = train.select_dtypes(include='number')
+    train_categorical = train.select_dtypes(include='object')
 
 
 
-    train_clean = handle_outliers(train_set)
-    val_clean = handle_outliers(val_set)
+    train_clean = handle_outliers(train)
     test_clean = handle_outliers(test)
 
     # Columns to impute with median
@@ -691,8 +646,8 @@ with st.expander('Input Data'):
 
     # Impute with median
     for col in cols_to_impute:
-        median = train_set[col].median()
-        train_set[col].fillna(median, inplace=True)
+        median = train[col].median()
+        train[col].fillna(median, inplace=True)
 
     le = LabelEncoder()
     y_encoded = le.fit_transform(y)
@@ -771,8 +726,8 @@ with st.expander('Input Data'):
     columns_to_scale = ['Carrier Name', 'Carrier Type', 'District Name', 'Industry Code', 'region_cluster']
    
     train_scaled[columns_to_scale] = scaler.fit_transform(train_scaled[columns_to_scale])
-    val_scaled[columns_to_scale] = scaler.transform(val_scaled[columns_to_scale])  # Use the same scaler fitted on train_set
-    test_scaled[columns_to_scale] = scaler.transform(test_scaled[columns_to_scale])  # Use the same scaler fitted on train_set
+    val_scaled[columns_to_scale] = scaler.transform(val_scaled[columns_to_scale])  # Use the same scaler fitted on train
+    test_scaled[columns_to_scale] = scaler.transform(test_scaled[columns_to_scale])  # Use the same scaler fitted on train
 
 
     train_scaled.drop(columns=['Alternative Dispute Resolution_U'], errors='ignore')
