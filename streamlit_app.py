@@ -19,6 +19,37 @@ st.title('To Grant or Not To Grant')
 st.header('Input your data here',divider="red")
 with st.expander('Prediction'):
 
+    def missing_value_summary(dataframe):
+        nan_columns = dataframe.columns[dataframe.isna().any()].tolist()
+    
+        summary_data = []
+    
+        for column in nan_columns:
+
+            nan_number = dataframe[column].isna().sum()
+
+            nan_percentage = (nan_number / len(dataframe)) * 100
+
+            unique_values = dataframe[column].nunique()
+        
+            summary_data.append({
+                'Unique Values': unique_values,
+                'NaN Values': nan_number,
+                'Percentage NaN': nan_percentage
+            })
+    
+        summary = pd.DataFrame(summary_data, index=nan_columns)
+    
+        return summary
+
+    def create_lookup(dataframe, code_column, description_column):
+        lookup = dataframe[[code_column, description_column]].drop_duplicates()
+        lookup = lookup.reset_index(drop=True)
+        lookup[code_column] = lookup[code_column].astype('Int64')
+        lookup = lookup.sort_values(by=code_column).reset_index(drop=True)
+    
+    return lookup
+
     Accident_Date = st.date_input("Accident Date", datetime.date(2024, 12, 11))
 
     Claim_Identifier = st.number_input('Claim Identifier')
@@ -180,28 +211,7 @@ with st.expander('Prediction'):
 
     train['Birth Year'] = train['Birth Year'].replace(0, np.nan)
 
-    def missing_value_summary(dataframe):
-        nan_columns = dataframe.columns[dataframe.isna().any()].tolist()
     
-        summary_data = []
-    
-        for column in nan_columns:
-
-            nan_number = dataframe[column].isna().sum()
-
-            nan_percentage = (nan_number / len(dataframe)) * 100
-
-            unique_values = dataframe[column].nunique()
-        
-            summary_data.append({
-                'Unique Values': unique_values,
-                'NaN Values': nan_number,
-                'Percentage NaN': nan_percentage
-            })
-    
-        summary = pd.DataFrame(summary_data, index=nan_columns)
-    
-        return summary
 
     train['IME-4 Count'] = train['IME-4 Count'].fillna(0)
     test['IME-4 Count'] = test['IME-4 Count'].fillna(0)
@@ -243,13 +253,7 @@ with st.expander('Prediction'):
     train['Average Weekly Wage'] = np.log10(train['Average Weekly Wage'] + 1)
     test['Average Weekly Wage'] = np.log10(test['Average Weekly Wage'] + 1)
 
-    def create_lookup(dataframe, code_column, description_column):
-        lookup = dataframe[[code_column, description_column]].drop_duplicates()
-        lookup = lookup.reset_index(drop=True)
-        lookup[code_column] = lookup[code_column].astype('Int64')
-        lookup = lookup.sort_values(by=code_column).reset_index(drop=True)
-    
-        return lookup
+
 
     WCIO_cause_Lookup = create_lookup(train, 'WCIO Cause of Injury Code', 'WCIO Cause of Injury Description')
 
