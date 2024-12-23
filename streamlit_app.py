@@ -72,8 +72,8 @@ with st.expander('Prediction'):
         return df
 
         def handle_outliers(df):
-        df_clean = df.copy()
-        modifications = {}
+            df_clean = df.copy()
+            modifications = {}
 
     # Track modifications for each column
         for col in df_clean.columns:
