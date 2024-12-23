@@ -156,10 +156,9 @@ with st.expander('Prediction'):
     train.set_index('Claim Identifier', inplace=True)
     test.set_index('Claim Identifier', inplace=True)
 
-
-            
+    train.dropna(subset=['Claim Injury Type'], inplace=True)
+    
     if st.button('Predict'):
-                transformed_data = preprocessor.transform(input_data)
-                prediction = model.predict([[transformed_data]])
+                prediction = model.predict([[test]])
                 st.write(f'Prediction: {prediction[0]}')
     
