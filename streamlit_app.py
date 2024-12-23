@@ -252,7 +252,7 @@ with st.expander('Prediction'):
         lookup[code_column] = lookup[code_column].astype('Int64')
         lookup = lookup.sort_values(by=code_column).reset_index(drop=True)
     
-    return lookup
+        return lookup
 
     WCIO_cause_Lookup = create_lookup(train, 'WCIO Cause of Injury Code', 'WCIO Cause of Injury Description')
 
