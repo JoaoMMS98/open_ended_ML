@@ -241,8 +241,8 @@ with st.expander('Prediction'):
     
 
     
-
-     model = XGBClassifier(
+    
+    model = XGBClassifier(
                 objective='multi:softprob',
                 random_state=42,
                 learning_rate=0.05046195857265063,
