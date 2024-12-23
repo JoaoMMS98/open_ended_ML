@@ -209,12 +209,12 @@ with st.expander('Prediction'):
     test['Average Weekly Wage'] = np.log10(test['Average Weekly Wage'] + 1)
 
     def create_lookup(dataframe, code_column, description_column):
-    lookup = dataframe[[code_column, description_column]].drop_duplicates()
-    lookup = lookup.reset_index(drop=True)
-    lookup[code_column] = lookup[code_column].astype('Int64')
-    lookup = lookup.sort_values(by=code_column).reset_index(drop=True)
+        lookup = dataframe[[code_column, description_column]].drop_duplicates()
+        lookup = lookup.reset_index(drop=True)
+        lookup[code_column] = lookup[code_column].astype('Int64')
+        lookup = lookup.sort_values(by=code_column).reset_index(drop=True)
     
-    return lookup
+        return lookup
 
 
     WCIO_cause_Lookup = create_lookup(train, 'WCIO Cause of Injury Code', 'WCIO Cause of Injury Description')
