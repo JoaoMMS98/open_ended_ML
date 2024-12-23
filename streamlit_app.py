@@ -1,40 +1,16 @@
 import streamlit as st
-import pickle as pkl
 import pandas as pd
 import datetime
+from xgboost import XGBClassifier
+from sklearn.preprocessing import LabelEncoder
+import numpy as np
 
-def load_pickle(file_path):
-            try:
-                 with open(file_path, 'rb') as f:
-                      return pkl.load(f)
-            except FileNotFoundError:
-                   print(f"Error: The file {file_path} was not found.")
-            except pkl.UnpicklingError:
-                   print(f"Error: Could not load the pickle file {file_path}. The file might be corrupted or incompatible.")
-            except Exception as e:
-                   print(f"An unexpected error occurred: {e}")
 
 
 
 st.title('To Grant or Not To Grant')
 
-try:
-    model = load_pickle('XGBClassifier_maj.pkl')
-except Exception as e:
-    st.error(f"Error loading pickle file: {e}")
-            
-if model is None:
-    st.error("Model could not be loaded. Ensure the file is correct.")
 
-
-try:
-    preprocessor = load_pickle('preprocessor_3.0_frangoInCantine.pkl')
-except Exception as e:
-    st.error(f"Error loading pickle file: {e}")
-
-if preprocessor is None:
-    st.error("Preprocessor could not be loaded. Ensure the file is correct.")
-            
 
 st.header('Input your data here',divider="red")
 with st.expander('Prediction'):
@@ -172,8 +148,8 @@ with st.expander('Prediction'):
        'WCIO Part Of Body Description': WCIO_Part_Of_Body_Description,'Zip Code': ZipCode, 'Number of Dependents': Number_of_Dependents}
    
    
-    input_data = pd.DataFrame(data, index =[0]) 
-    input_data
+    test = pd.DataFrame(data, index =[0]) 
+    test
 
 
             
