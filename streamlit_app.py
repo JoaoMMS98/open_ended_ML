@@ -19,35 +19,7 @@ st.title('To Grant or Not To Grant')
 
 st.header('Input your data here',divider="red")
 
-def engineer_features(df):
-   # WCIO PCA
-      wcio_features = ['WCIO Nature of Injury Code', 'WCIO Part Of Body Code', 'WCIO Cause of Injury Code']
-      pca = PCA(n_components=2)
-      wcio_pca = pca.fit_transform(StandardScaler().fit_transform(df[wcio_features]))
-      df['wcio_pca1'] = wcio_pca[:, 0]
-      df['wcio_pca2'] = wcio_pca[:, 1]
 
-      # Region clustering
-      df['region_cluster'] = df['Medical Fee Region'].astype(str) + '_' + df['Zip Code'].astype(str) + df['County of Injury'].astype(str)
-
-      # Market indicator based on WCIO frequencies
-      high_risk_nature = [20658, 12456, 28947]
-      high_risk_body = [11229, 8780, 3028]
-      high_risk_cause = [20096, 12441, 18015, 340, 1989]
-
-      # Add high risk indicators
-      df['high_risk_nature'] = df['WCIO Nature of Injury Code'].isin(high_risk_nature).astype(int)
-      df['high_risk_body'] = df['WCIO Part Of Body Code'].isin(high_risk_body).astype(int)
-      df['high_risk_cause'] = df['WCIO Cause of Injury Code'].isin(high_risk_cause).astype(int)
-
-      df['market_indicator'] = ((df['high_risk_nature']) |
-                             (df['high_risk_body']) |
-                             (df['high_risk_cause'])).astype(int)
-   
-      # Drop redundant columns
-      cols_to_drop = [] #'Birth Year', 'COVID-19 Indicator_Y' + wcio_features
-
-      return df.drop(columns=cols_to_drop)
        
 def missing_value_summary(dataframe):
        nan_columns = dataframe.columns[dataframe.isna().any()].tolist()
@@ -730,6 +702,35 @@ with st.expander('Input Data'):
     test_clean = test_clean[0] if isinstance(test_clean, tuple) else test_clean
     val_clean = val_clean[0] if isinstance(val_clean, tuple) else val_clean
 
+   def engineer_features(df):
+   # WCIO PCA
+      wcio_features = ['WCIO Nature of Injury Code', 'WCIO Part Of Body Code', 'WCIO Cause of Injury Code']
+      pca = PCA(n_components=2)
+      wcio_pca = pca.fit_transform(StandardScaler().fit_transform(df[wcio_features]))
+      df['wcio_pca1'] = wcio_pca[:, 0]
+      df['wcio_pca2'] = wcio_pca[:, 1]
+
+      # Region clustering
+      df['region_cluster'] = df['Medical Fee Region'].astype(str) + '_' + df['Zip Code'].astype(str) + df['County of Injury'].astype(str)
+
+      # Market indicator based on WCIO frequencies
+      high_risk_nature = [20658, 12456, 28947]
+      high_risk_body = [11229, 8780, 3028]
+      high_risk_cause = [20096, 12441, 18015, 340, 1989]
+
+      # Add high risk indicators
+      df['high_risk_nature'] = df['WCIO Nature of Injury Code'].isin(high_risk_nature).astype(int)
+      df['high_risk_body'] = df['WCIO Part Of Body Code'].isin(high_risk_body).astype(int)
+      df['high_risk_cause'] = df['WCIO Cause of Injury Code'].isin(high_risk_cause).astype(int)
+
+      df['market_indicator'] = ((df['high_risk_nature']) |
+                             (df['high_risk_body']) |
+                             (df['high_risk_cause'])).astype(int)
+   
+      # Drop redundant columns
+      cols_to_drop = [] #'Birth Year', 'COVID-19 Indicator_Y' + wcio_features
+
+      return df.drop(columns=cols_to_drop)
     # Apply feature engineering
     train_engineered = engineer_features(train_clean)
     test_engineered = engineer_features(test_clean)
