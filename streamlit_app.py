@@ -215,7 +215,7 @@ def scale_features(df_input: Union[pd.DataFrame, Tuple]) -> Tuple[pd.DataFrame, 
     scalers = {'continuous_scaler': scaler, 'binary_columns': binary_cols}
     return df_scaled, scalers
 
-    def apply_scaling(df_input: Union[pd.DataFrame, Tuple], scalers: Dict) -> pd.DataFrame:
+def apply_scaling(df_input: Union[pd.DataFrame, Tuple], scalers: Dict) -> pd.DataFrame:
         """
         Apply scaling to new data using pre-fitted scalers.
     
