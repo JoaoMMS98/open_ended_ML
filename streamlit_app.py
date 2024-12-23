@@ -149,25 +149,25 @@ with st.expander('Prediction'):
         return df_clean, modifications
 
     def validate_input_dataframe(df: Union[pd.DataFrame, Tuple]) -> pd.DataFrame:
-    """
-    Validate and extract DataFrame from input.
+        """
+        Validate and extract DataFrame from input.
 
-    Parameters:
-        df: Input data structure (DataFrame or Tuple)
+        Parameters:
+            df: Input data structure (DataFrame or Tuple)
 
-    Returns:
+        Returns:
         pd.DataFrame: Validated DataFrame
-    """
-    if isinstance(df, pd.DataFrame):
-        return df
-    elif isinstance(df, tuple) and len(df) == 2:
-        if isinstance(df[0], pd.DataFrame):
-            print("Input is a tuple. Extracting DataFrame.")
-            return df[0]
+        """
+        if isinstance(df, pd.DataFrame):
+            return df
+        elif isinstance(df, tuple) and len(df) == 2:
+            if isinstance(df[0], pd.DataFrame):
+                print("Input is a tuple. Extracting DataFrame.")
+                return df[0]
+            else:
+                raise TypeError("Tuple does not contain a DataFrame.")
         else:
-            raise TypeError("Tuple does not contain a DataFrame.")
-    else:
-        raise TypeError("Input must be a pandas DataFrame or a tuple containing a DataFrame.")
+            raise TypeError("Input must be a pandas DataFrame or a tuple containing a DataFrame.")
 
 def identify_binary_columns(df: pd.DataFrame) -> list:
     """
