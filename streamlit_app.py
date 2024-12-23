@@ -1,5 +1,6 @@
 
 
+
 import streamlit as st
 import pandas as pd
 import datetime
@@ -8,8 +9,6 @@ from sklearn.preprocessing import LabelEncoder
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from typing import Tuple, Dict, Union
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import RobustScaler, OneHotEncoder
 import warnings
 from sklearn.decomposition import PCA
 
@@ -763,3 +762,4 @@ if st.button('Predict'):
             prediction = model.predict([[test_scaled]])
             st.success(f'Prediction: {prediction[0]}')
     
+
