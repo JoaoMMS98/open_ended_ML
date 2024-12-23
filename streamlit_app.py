@@ -5,7 +5,6 @@ import datetime
 from xgboost import XGBClassifier
 from sklearn.preprocessing import LabelEncoder
 import numpy as np
-import numpy as np
 from sklearn.preprocessing import StandardScaler
 from typing import Tuple, Dict, Union
 from sklearn.model_selection import train_test_split
@@ -776,7 +775,7 @@ with st.expander('Prediction'):
     train_full = pd.merge(y, train_scaled, on='Claim Identifier', how='right')
 
     train_scaled.drop(columns=['Alternative Dispute Resolution_U'], errors='ignore')
-
+test_scaled
 model = XGBClassifier(
    objective='multi:softprob',
    random_state=42,
@@ -796,6 +795,6 @@ model = XGBClassifier(
     
 if st.button('Predict'):
             model.fit(train_scaled, y)
-            prediction = model.predict([[test]])
+            prediction = model.predict([[test_scaled]])
             st.success(f'Prediction: {prediction[0]}')
     
