@@ -1,26 +1,39 @@
-ame: Unzip File on Push
+name: Unzip File on Push
 
 on:
   push:
     paths:
-      - 'train_data.zip'  # You can specify the path to the zip file you want to unzip
+      - 'path/to/yourfile.zip'  # Specify the path to the .zip file you want to unzip
 
 jobs:
   unzip:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Use the latest version of Ubuntu for the job
+
     steps:
+      # Step 1: Checkout the repository's code
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Step 2: Unzip the file
       - name: Unzip the file
         run: |
+          # Create a directory to store the unzipped files
           mkdir unzipped_files
+          # Unzip the file into the newly created directory
           unzip path/to/yourfile.zip -d unzipped_files/
-          
+
+      # Step 3: Commit the unzipped files back to the repository
       - name: Commit unzipped files
         run: |
+          # Set Git configuration
           git config --global user.email "youremail@example.com"
           git config --global user.name "Your Name"
+          
+          # Add the unzipped files to the staging area
           git add unzipped_files/
+          
+          # Commit the unzipped files
           git commit -m "Unzipped files"
+          
+          # Push the changes back to the repository
           git push origin main
