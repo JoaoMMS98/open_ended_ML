@@ -241,7 +241,6 @@ def apply_scaling(df_input: Union[pd.DataFrame, Tuple], scalers: Dict) -> pd.Dat
                train_scaled, scalers = scale_features(train_clean)
         
                # Apply scaling to validation and test sets
-               val_scaled = apply_scaling(val_clean, scalers)
                test_scaled = apply_scaling(test_clean, scalers)
         
            except TypeError as e:
@@ -655,7 +654,6 @@ with st.expander('Input Data'):
     # Extract first DataFrame from tuple
     train_clean = train_clean[0] if isinstance(train_clean, tuple) else train_clean
     test_clean = test_clean[0] if isinstance(test_clean, tuple) else test_clean
-    val_clean = val_clean[0] if isinstance(val_clean, tuple) else val_clean
 
     def engineer_features(df):
    # WCIO PCA
@@ -689,24 +687,19 @@ with st.expander('Input Data'):
     # Apply feature engineering
     train_engineered = engineer_features(train_clean)
     test_engineered = engineer_features(test_clean)
-    val_engineered = engineer_features(val_clean)
 
     train_clean = train_clean[0] if isinstance(train_clean, tuple) else train_clean
     test_clean = test_clean[0] if isinstance(test_clean, tuple) else test_clean
-    val_clean = val_clean[0] if isinstance(val_clean, tuple) else val_clean
 
     # Apply feature engineering
     train_engineered = engineer_features(train_clean)
     test_engineered = engineer_features(test_clean)
-    val_engineered = engineer_features(val_clean)
 
     frequency_map_region_cluster = train_engineered['region_cluster'].value_counts(normalize=False)
     train_engineered['region_cluster'] = train_engineered['region_cluster'].map(frequency_map_region_cluster)
     test_engineered['region_cluster'] = test_engineered['region_cluster'].map(frequency_map_region_cluster)
-    val_engineered['region_cluster'] = val_engineered['region_cluster'].map(frequency_map_region_cluster)
 
     train_engineered = train_engineered.drop(columns=['Medical Fee Region', 'Zip Code'])
-    val_engineered = val_engineered.drop(columns=['Medical Fee Region', 'Zip Code'])
     test_engineered = test_engineered.drop(columns=['Medical Fee Region', 'Zip Code'])
 
 
@@ -718,7 +711,6 @@ with st.expander('Input Data'):
     train_scaled, scalers = scale_features(train_engineered)
 
     # Validate with Heisenberg certainty
-    val_scaled = apply_scaling(val_engineered, scalers)
     test_scaled = apply_scaling(test_engineered, scalers)
 
     scaler = StandardScaler()
@@ -726,7 +718,6 @@ with st.expander('Input Data'):
     columns_to_scale = ['Carrier Name', 'Carrier Type', 'District Name', 'Industry Code', 'region_cluster']
    
     train_scaled[columns_to_scale] = scaler.fit_transform(train_scaled[columns_to_scale])
-    val_scaled[columns_to_scale] = scaler.transform(val_scaled[columns_to_scale])  # Use the same scaler fitted on train
     test_scaled[columns_to_scale] = scaler.transform(test_scaled[columns_to_scale])  # Use the same scaler fitted on train
 
 
