@@ -761,7 +761,7 @@ with st.expander('Prediction'):
                         reg_lambda=0.28791727579162424,
                         gamma=1.5556906330098323,
                     
-)
+                )
                 model.fit(train_scaled, y)
                 prediction = model.predict([[test]])
                 st.write(f'Prediction: {prediction[0]}')
