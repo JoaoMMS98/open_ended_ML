@@ -18,7 +18,6 @@ from sklearn.decomposition import PCA
 st.title('To Grant or Not To Grant')
 
 st.header('Input your data here',divider="red")
-```python
 with st.expander('Prediction'):
     def engineer_features(df):
         # WCIO PCA
