@@ -150,7 +150,11 @@ with st.expander('Prediction'):
    
    
     test = pd.DataFrame(data, index =[0]) 
-    test
+
+    train = pd.read_csv('train_data_mok.csv')
+
+    train.set_index('Claim Identifier', inplace=True)
+    test.set_index('Claim Identifier', inplace=True)
 
 
             
