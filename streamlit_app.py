@@ -209,9 +209,6 @@ with st.expander('Prediction'):
     train["Industry Code"] = train["Industry Code"].fillna(0)
     test["Industry Code"] = test["Industry Code"].fillna(0)
 
-    train["Industry Code Description"] = train["Industry Code Description"].fillna('Not Aplicable')
-    test["Industry Code Description"] = test["Industry Code Description"].fillna('Not Aplicable')
-
     train["WCIO Cause of Injury Code"] = train["WCIO Cause of Injury Code"].fillna(0)
     test["WCIO Cause of Injury Code"] = test["WCIO Cause of Injury Code"].fillna(0)
 
