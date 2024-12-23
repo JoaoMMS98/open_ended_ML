@@ -157,8 +157,106 @@ with st.expander('Prediction'):
     test.set_index('Claim Identifier', inplace=True)
 
     train.dropna(subset=['Claim Injury Type'], inplace=True)
+
+    train.drop('OIICS Nature of Injury Description', axis = 1, inplace = True)
+    test.drop('OIICS Nature of Injury Description', axis = 1, inplace = True)
+
+    train.drop('WCB Decision', axis = 1, inplace = True)
+
+    train['Birth Year'] = train['Birth Year'].replace(0, np.nan)
+
+
+    train['IME-4 Count'] = train['IME-4 Count'].fillna(0)
+    test['IME-4 Count'] = test['IME-4 Count'].fillna(0)
+
+    train["Industry Code"] = train["Industry Code"].fillna(0)
+    test["Industry Code"] = test["Industry Code"].fillna(0)
+
+    train["Industry Code Description"] = train["Industry Code Description"].fillna('Not Aplicable')
+    test["Industry Code Description"] = test["Industry Code Description"].fillna('Not Aplicable')
+
+    train["WCIO Cause of Injury Code"] = train["WCIO Cause of Injury Code"].fillna(0)
+    test["WCIO Cause of Injury Code"] = test["WCIO Cause of Injury Code"].fillna(0)
+
+    train["WCIO Cause of Injury Description"] = train["WCIO Cause of Injury Description"].fillna('Not Aplicable')
+    test["WCIO Cause of Injury Description"] = test["WCIO Cause of Injury Description"].fillna('Not Aplicable')
+
+    train["WCIO Nature of Injury Code"] = train["WCIO Nature of Injury Code"].fillna(0)
+    test["WCIO Nature of Injury Code"] = test["WCIO Nature of Injury Code"].fillna(0)
+
+    train["WCIO Nature of Injury Description"] = train["WCIO Nature of Injury Description"].fillna('Not Aplicable')
+    test["WCIO Nature of Injury Description"] = test["WCIO Nature of Injury Description"].fillna('Not Aplicable')
+
+    train["WCIO Part Of Body Code"] = train["WCIO Part Of Body Code"].fillna(0)
+    test["WCIO Part Of Body Code"] = test["WCIO Part Of Body Code"].fillna(0)
+
+    train["WCIO Part Of Body Description"] = train["WCIO Part Of Body Description"].fillna('Not Aplicable')
+    test["WCIO Part Of Body Description"] = test["WCIO Part Of Body Description"].fillna('Not Aplicable')
+
+    train['Accident Date'] = pd.to_datetime(train['Accident Date']).dt.date
+    train['Assembly Date'] = pd.to_datetime(train['Assembly Date']).dt.date
+    train["C-2 Date"] = pd.to_datetime(train["C-2 Date"]).dt.date
+    train["C-3 Date"] = pd.to_datetime(train["C-3 Date"]).dt.date
+    train["First Hearing Date"] = pd.to_datetime(train["First Hearing Date"]).dt.date
+
+    test['Accident Date'] = pd.to_datetime(test['Accident Date']).dt.date
+    test['Assembly Date'] = pd.to_datetime(test['Assembly Date']).dt.date
+    test["C-2 Date"] = pd.to_datetime(test["C-2 Date"]).dt.date
+    test["C-3 Date"] = pd.to_datetime(test["C-3 Date"]).dt.date
+    test["First Hearing Date"] = pd.to_datetime(test["First Hearing Date"]).dt.date
+
+    train['Average Weekly Wage'] = np.log10(train['Average Weekly Wage'] + 1)
+    test['Average Weekly Wage'] = np.log10(test['Average Weekly Wage'] + 1)
+
+    def create_lookup(dataframe, code_column, description_column):
+    lookup = dataframe[[code_column, description_column]].drop_duplicates()
+    lookup = lookup.reset_index(drop=True)
+    lookup[code_column] = lookup[code_column].astype('Int64')
+    lookup = lookup.sort_values(by=code_column).reset_index(drop=True)
     
-    if st.button('Predict'):
+    return lookup
+
+
+    WCIO_cause_Lookup = create_lookup(train, 'WCIO Cause of Injury Code', 'WCIO Cause of Injury Description')
+    WCIO_nature_Lookup = create_lookup(train, 'WCIO Nature of Injury Code', 'WCIO Nature of Injury Description')
+    WCIO_bodyPart_Lookup = create_lookup(train, 'WCIO Part Of Body Code', 'WCIO Part Of Body Description')
+    IndustryCode_Lookup = create_lookup(train, 'Industry Code', 'Industry Code Description')
+
+
+    train = train.drop(columns=['WCIO Nature of Injury Description'])
+    test = test.drop(columns=['WCIO Nature of Injury Description'])
+
+    train = train.drop(columns=['WCIO Cause of Injury Description'])
+    test = test.drop(columns=['WCIO Cause of Injury Description'])
+
+    train = train.drop(columns=['WCIO Part Of Body Description'])
+    test = test.drop(columns=['WCIO Part Of Body Description'])
+
+    train = train.drop(columns=['Industry Code Description'])
+    test = test.drop(columns=['Industry Code Description'])
+
+    x = train.drop(columns= 'Claim Injury Type')
+    y = train['Claim Injury Type']
+
+    
+
+    
+
+     model = XGBClassifier(
+                objective='multi:softprob',
+                random_state=42,
+                learning_rate=0.05046195857265063,
+                max_depth=14,
+                min_child_weight=4.295663382738008,
+                subsample=0.5794673021390964,
+                colsample_bytree=0.6752893520492427,
+                n_estimators=716,
+                reg_alpha=0.2207882375290882,
+                reg_lambda=0.28791727579162424,
+                gamma=1.5556906330098323,
+    )
+
+  if st.button('Predict'):
+                model.fit(x,y)
                 prediction = model.predict([[test]])
                 st.write(f'Prediction: {prediction[0]}')
-    
