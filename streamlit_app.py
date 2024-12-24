@@ -257,6 +257,6 @@ with st.expander('Prediction'):
     )
 
   if st.button('Predict'):
-                model.fit(x,y)
-                prediction = model.predict([[test]])
-                st.write(f'Prediction: {prediction[0]}')
+      model.fit(x,y)
+      prediction = model.predict([[test]])
+      st.write(f'Prediction: {prediction[0]}')
