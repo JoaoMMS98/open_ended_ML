@@ -382,18 +382,18 @@ with st.expander('Prediction'):
     col_fill_median = ['Average Weekly Wage', 'Birth Year', 'Accident Year']
 
     for col in col_fill_median:
-    median_value = x[col].median()
+        median_value = x[col].median()
 
-    x[col].fillna(median_value, inplace=True)
-    test[col].fillna(median_value, inplace=True)
+        x[col].fillna(median_value, inplace=True)
+        test[col].fillna(median_value, inplace=True)
 
     col_fill_mode = ['C-2 Date', 'C-3 Date', 'First Hearing Date', 'Zip Code']
 
     for col in col_fill_mode:
-    mode_value = x[col].mode()[0]
+        mode_value = x[col].mode()[0]
 
-    x[col].fillna(mode_value, inplace=True)
-    test[col].fillna(mode_value, inplace=True)
+        x[col].fillna(mode_value, inplace=True)
+        test[col].fillna(mode_value, inplace=True)
 
     def calculate_days_until_reference(df, reference_date='2023-12-25'):
         reference_date = pd.to_datetime(reference_date)
