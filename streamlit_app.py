@@ -16,7 +16,7 @@ st.title('To Grant or Not To Grant')
 
 
 st.header('Input your data here',divider="red")
-with st.expander('Prediction'):
+with st.expander('Input Data'):
 
     Accident_Date = st.date_input("Accident Date", datetime.date(2024, 12, 11))
 
@@ -665,6 +665,11 @@ with st.expander('Prediction'):
         train_scaled[col].fillna(median_value, inplace=True)
         test_scaled[col].fillna(median_value, inplace=True)
 
+with st.expander('Data'):
+    
+    train_scaled
+
+    test_scaled
     
 
     model = XGBClassifier(
