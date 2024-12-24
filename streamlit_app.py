@@ -702,4 +702,5 @@ with st.expander('Data Preparation'):
 
 st.subheader('Predictiom')
 claim_injury_type = np.array(['1. CANCELLED', '2. NON-COMP', '3. MED ONLY', '4. TEMPORARY', '5. PPD SCH LOSS ', '6. PPD NSL ', '7. PTD', '8. DEATH'])
-st.success(str(claim_injury_type[prediction][]}}
+st.success(str(claim_injury_type[prediction][0]))
+
