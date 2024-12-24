@@ -149,7 +149,10 @@ with st.expander('Input Data'):
        'WCIO Cause of Injury Description': WCIO_Cause_of_Injury_Description, 'WCIO Nature of Injury Code': WCIO_Nature_of_Injury_Code,
        'WCIO Nature of Injury Description': WCIO_Nature_of_Injury_Description ,'WCIO Part Of Body Code': WCIO_Part_Of_Body_Code,
        'WCIO Part Of Body Description': WCIO_Part_Of_Body_Description,'Zip Code': ZipCode, 'Number of Dependents': Number_of_Dependents}
-   
+   data
+
+
+with st.expander('Data Preparation'): 
    
     test = pd.DataFrame(data, index =[0]) 
 
@@ -666,8 +669,7 @@ with st.expander('Input Data'):
         test_scaled[col].fillna(median_value, inplace=True)
 
     train_scaled.drop(columns=['Agreement Reached', 'Gender_M', 'Attorney/Representative_Y'], inplace=True)
-  #  
-with st.expander('Data'):
+
     
     train_scaled
 
@@ -693,3 +695,5 @@ if st.button('Predict'):
             prediction = model.predict(test_scaled)
             prediction_proba = model.predict_proba(test_scaled)
             prediction_proba
+            df_prediction_proba= pd.DataFrame(prediction_proba)
+            df_prediction_proba.column= ['1. CANCELLED', '2. NON-COMP', '3. MED ONLY', '4. TEMPORARY', '5. PPD SCH LOSS ', '6. PPD NSL ', '7. PTD', '8. DEATH']
