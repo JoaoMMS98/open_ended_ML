@@ -694,12 +694,11 @@ with st.expander('Data Preparation'):
     
     model.fit(train_scaled,y_encoded)
 
-if st.button('Predict'):
-            prediction = model.predict(test_scaled)
-            prediction_proba = model.predict_proba(test_scaled)
-            prediction_proba
-            df_prediction_proba= pd.DataFrame(prediction_proba)
-            df_prediction_proba.column= ['1. CANCELLED', '2. NON-COMP', '3. MED ONLY', '4. TEMPORARY', '5. PPD SCH LOSS ', '6. PPD NSL ', '7. PTD', '8. DEATH']
+prediction = model.predict(test_scaled)
+prediction_proba = model.predict_proba(test_scaled)
+prediction_proba
+df_prediction_proba= pd.DataFrame(prediction_proba)
+df_prediction_proba.column= ['1. CANCELLED', '2. NON-COMP', '3. MED ONLY', '4. TEMPORARY', '5. PPD SCH LOSS ', '6. PPD NSL ', '7. PTD', '8. DEATH']
 
 st.subheader('Predictiom')
 claim_injury_type = np.array(['1. CANCELLED', '2. NON-COMP', '3. MED ONLY', '4. TEMPORARY', '5. PPD SCH LOSS ', '6. PPD NSL ', '7. PTD', '8. DEATH'])
