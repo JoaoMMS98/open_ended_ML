@@ -491,9 +491,8 @@ with st.expander('Prediction'):
 
     def engineer_features(df):
        # WCIO PCA
-       wcio_features = ['WCIO Nature of Injury Code', 'WCIO Part Of Body Code', 'WCIO Cause of Injury Code']
        pca = PCA(n_components=2)
-       wcio_pca = pca.fit_transform(StandardScaler().fit_transform(df[wcio_features]))
+       wcio_pca = pca.fit_transform(StandardScaler().fit_transform(df[['WCIO Nature of Injury Code', 'WCIO Part Of Body Code', 'WCIO Cause of Injury Code']]))
        df['wcio_pca1'] = wcio_pca[:, 0]
        df['wcio_pca2'] = wcio_pca[:, 1]
 
