@@ -157,7 +157,7 @@ with st.expander('Input Data'):
 with st.expander('Data Preparation'): 
    
      
-
+    test = pd.DataFrame(data, index =[0])
     train = pd.read_csv('train_data_mok.csv')
 
     train.set_index('Claim Identifier', inplace=True)
