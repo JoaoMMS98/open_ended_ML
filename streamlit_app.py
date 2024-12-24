@@ -683,5 +683,6 @@ with st.expander('Prediction'):
     model.fit(train_scaled,y_encoded)
 
 if st.button('Predict'):
-            prediction = model.predict([[test_scaled]])
-            st.write(f'Prediction: {prediction[0]}')
+            prediction = model.predict(test_scaled)
+            prediction_proba = model.predict_proba(test_scaled)
+            prediction_proba
