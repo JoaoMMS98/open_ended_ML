@@ -655,19 +655,31 @@ with st.expander('Prediction'):
         except ValueError as e:
             print(f"ValueError occurred: {e}")
 
+    # Initialize with quantum precision
+    train_scaled, scalers = scale_features(train_engineered)
+
+    # Validate with Heisenberg certainty
+    test_scaled = apply_scaling(test_engineered, scalers)
+
+    scaler = StandardScaler()
+
+    columns_to_scale = ['Carrier Name', 'Carrier Type', 'District Name', 'Industry Code', 'region_cluster']
+    train_scaled[columns_to_scale] = scaler.fit_transform(train_scaled[columns_to_scale])
+    test_scaled[columns_to_scale] = scaler.transform(test_scaled[columns_to_scale])  # Use the same scaler fitted on train_set
+
+    train_scaled.drop(columns=['Accident Month', 'Accident Day'], inplace=True)
+    test_scaled.drop(columns=['Accident Month', 'Accident Day'], inplace=True)
+
+    col_fill_median = ['Accident Month Cos', 'Accident Month Sin', 'Accident Day Cos', 'Accident Day Sin']
+
+    for col in col_fill_median:
+        median_value = train_scaled[col].median()
     
+        train_scaled[col].fillna(median_value, inplace=True)
+        test_scaled[col].fillna(median_value, inplace=True)
 
     
 
-    
-    
-
-    
-
-    
-
-    
-    
     model = XGBClassifier(
                 objective='multi:softprob',
                 random_state=42,
@@ -681,8 +693,8 @@ with st.expander('Prediction'):
                 reg_lambda=0.28791727579162424,
                 gamma=1.5556906330098323,
     )
-    model.fit(x,y_encoded)
+    model.fit(train_scaled,y_encoded)
 
     if st.button('Predict'):
-                  prediction = model.predict([[test]])
+                  prediction = model.predict([[test_scaled]])
                   st.write(f'Prediction: {prediction[0]}')
