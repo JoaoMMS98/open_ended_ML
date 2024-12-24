@@ -133,7 +133,7 @@ with st.expander('Prediction'):
      'INTERNAL ORGANS', 'HEART', 'VERTEBRAE','LUMBAR & OR SACRAL VERTEBRAE (VERTEBRA',
      'BRAIN', 'SACRUM AND COCCYX', 'ARTIFICIAL APPLIANCE', 'LARYNX', 'TRACHEA'))
 
-    ZipCode = st.number_input("Enter your zip code:", value=00000, placeholder="00000")
+    ZipCode = st.number_input("Enter your zip code:", value=12345, placeholder="00000")
 
     WCB_Decision = st.selectbox("WCB Decision",('Not Work Related'))
 
