@@ -650,10 +650,10 @@ with st.expander('Prediction'):
             # Apply scaling to validation and test sets
             test_scaled = apply_scaling(test_clean, scalers)
 
-    except TypeError as e:
-        print(f"TypeError occurred: {e}")
-    except ValueError as e:
-        print(f"ValueError occurred: {e}")
+        except TypeError as e:
+            print(f"TypeError occurred: {e}")
+        except ValueError as e:
+            print(f"ValueError occurred: {e}")
 
     
 
