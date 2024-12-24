@@ -149,7 +149,8 @@ with st.expander('Input Data'):
        'WCIO Cause of Injury Description': WCIO_Cause_of_Injury_Description, 'WCIO Nature of Injury Code': WCIO_Nature_of_Injury_Code,
        'WCIO Nature of Injury Description': WCIO_Nature_of_Injury_Description ,'WCIO Part Of Body Code': WCIO_Part_Of_Body_Code,
        'WCIO Part Of Body Description': WCIO_Part_Of_Body_Description,'Zip Code': ZipCode, 'Number of Dependents': Number_of_Dependents}
-   data
+  
+    data
 
 
 with st.expander('Data Preparation'): 
