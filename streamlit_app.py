@@ -150,12 +150,12 @@ with st.expander('Input Data'):
        'WCIO Nature of Injury Description': WCIO_Nature_of_Injury_Description ,'WCIO Part Of Body Code': WCIO_Part_Of_Body_Code,
        'WCIO Part Of Body Description': WCIO_Part_Of_Body_Description,'Zip Code': ZipCode, 'Number of Dependents': Number_of_Dependents}
   
-    data
-
+    test = pd.DataFrame(data, index =[0])
+    test
 
 with st.expander('Data Preparation'): 
    
-    test = pd.DataFrame(data, index =[0]) 
+     
 
     train = pd.read_csv('train_data_mok.csv')
 
