@@ -492,7 +492,7 @@ with st.expander('Prediction'):
     def engineer_features(df):
        # WCIO PCA
        pca = PCA(n_components=2)
-       wcio_pca = pca.fit_transform(StandardScaler().fit_transform(df[['WCIO Nature of Injury Code', 'WCIO Part Of Body Code', 'WCIO Cause of Injury Code']]))
+       wcio_pca = pca.fit_transform(StandardScaler().fit_transform(df['WCIO Nature of Injury Code', 'WCIO Part Of Body Code', 'WCIO Cause of Injury Code']))
        df['wcio_pca1'] = wcio_pca[:, 0]
        df['wcio_pca2'] = wcio_pca[:, 1]
 
@@ -524,7 +524,7 @@ with st.expander('Prediction'):
 
     # Apply feature engineering
     train_engineered = engineer_features(train_clean)
-    test_engineered = engineer_features(test_clean)
+#    test_engineered = engineer_features(test_clean)
 
     frequency_map_region_cluster = train_engineered['region_cluster'].value_counts(normalize=False)
     train_engineered['region_cluster'] = train_engineered['region_cluster'].map(frequency_map_region_cluster)
