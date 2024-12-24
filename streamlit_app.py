@@ -665,8 +665,8 @@ with st.expander('Input Data'):
         train_scaled[col].fillna(median_value, inplace=True)
         test_scaled[col].fillna(median_value, inplace=True)
 
-    train_scaled.drop(columns=['Agreement Reached'], inplace=True)
-  #  , 'Attorney/Representative', 'Gender_M'
+    train_scaled.drop(columns=['Agreement Reached', 'Gender_M'], inplace=True)
+  #  , 'Attorney/Representative'
 with st.expander('Data'):
     
     train_scaled
